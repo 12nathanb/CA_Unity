@@ -55,27 +55,13 @@ public class Map : MonoBehaviour {
         }
     }
 
-    void CreateMesh()
+    public void CreateMesh()
     {
-        for (int w = 0; w < width; w++)
-        {
-            for (int h = 0; h < height; h++)
-            {
-                if (cellMap[w, h].GetComponent<cellManager>().GetState() == cellStateforfloor.Alive)
-                {
-                  // newTriangle.Add(w);
-                    newVerts.Add(cellMap[w, h].transform.position);
-                }
-                
-            }
-        }
-
-        Mesh mesh = new Mesh();
-        GetComponent<MeshFilter>().mesh = mesh;
-        mesh.vertices = newVerts.ToArray();
-       // mesh.triangles = newTriangle.ToArray();
-
+        MeshGenerator meshGen = GetComponent<MeshGenerator>();
+        meshGen.GenerateMesh(cellMap, 1);
     }
+
+
 
 
     void Progress()

@@ -400,7 +400,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1814002281}
-        m_MethodName: Clear
+        m_MethodName: CreateMesh
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1813,6 +1813,7 @@ GameObject:
   - component: {fileID: 1814002280}
   - component: {fileID: 1814002279}
   - component: {fileID: 1814002281}
+  - component: {fileID: 1814002278}
   m_Layer: 0
   m_Name: GameObject
   m_TagString: Untagged
@@ -1849,6 +1850,17 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1814002278
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1814002275}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f20ca0290b20779478c7908dc0335ebe, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!23 &1814002279
 MeshRenderer:
   m_ObjectHideFlags: 0

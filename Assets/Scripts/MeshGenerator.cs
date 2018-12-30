@@ -9,7 +9,7 @@ public class MeshGenerator : MonoBehaviour
     List<Vector3> vertices;
     List<int> triangles;
 
-    public void GenerateMesh(int[,] map, float squareSize)
+    public void GenerateMesh(GameObject[,] map, float squareSize)
     {
         squareGrid = new SquareGrid(map, squareSize);
 
@@ -156,7 +156,7 @@ public class MeshGenerator : MonoBehaviour
     {
         public Square[,] squares;
 
-        public SquareGrid(int[,] map, float squareSize)
+        public SquareGrid(GameObject[,] map, float squareSize)
         {
             int nodeCountX = map.GetLength(0);
             int nodeCountY = map.GetLength(1);
@@ -170,7 +170,7 @@ public class MeshGenerator : MonoBehaviour
                 for (int y = 0; y < nodeCountY; y++)
                 {
                     Vector3 pos = new Vector3(-mapWidth / 2 + x * squareSize + squareSize / 2, 0, -mapHeight / 2 + y * squareSize + squareSize / 2);
-                    controlNodes[x, y] = new ControlNode(pos, map[x, y] == 1, squareSize);
+                    controlNodes[x, y] = new ControlNode(pos, map[x, y].GetComponent<cellManager>().GetState() == cellStateforfloor.Alive, squareSize);
                 }
             }
 
