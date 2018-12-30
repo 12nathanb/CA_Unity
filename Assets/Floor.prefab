@@ -196,3 +196,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   status: 0
+  alive: 0
+  neighbourCount: 0
+  grass: {fileID: 2800000, guid: e249b6a7df5e70b41b5483454018ef9c, type: 3}
+  water: {fileID: 2800000, guid: c89518e7c6438fa45a3a53fccd8952f3, type: 3}

@@ -10,7 +10,8 @@ public class cellManager : MonoBehaviour {
     Renderer Floorcolor;
     public bool alive;
     public int neighbourCount;
-
+    public Texture grass;
+    public Texture water;
 	// Use this for initialization
 	void Start ()
     {
@@ -24,12 +25,12 @@ public class cellManager : MonoBehaviour {
 		if (status == cellStateforfloor.Alive)
         {
             alive = true;
-            Floorcolor.material.color = Color.red;
+            Floorcolor.material.SetTexture("_MainTex", grass);
         }
         else
         {
             alive = false;
-            Floorcolor.material.color = Color.white;
+            Floorcolor.material.SetTexture("_MainTex", water);
         }
 	}
 
