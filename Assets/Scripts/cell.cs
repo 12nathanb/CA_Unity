@@ -7,6 +7,7 @@ enum cellState {Alive, Dead};
 public class cell : MonoBehaviour {
 
     cellState status;
+    Vector3 Position;
 
 	// Use this for initialization
 	void Start () {
@@ -27,4 +28,6 @@ public class cell : MonoBehaviour {
     {
         return status;
     }
+
+    
 }

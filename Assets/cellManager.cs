@@ -12,6 +12,8 @@ public class cellManager : MonoBehaviour {
     public int neighbourCount;
     public Texture grass;
     public Texture water;
+    public Vector3 position;
+
 	// Use this for initialization
 	void Start ()
     {
@@ -25,12 +27,12 @@ public class cellManager : MonoBehaviour {
 		if (status == cellStateforfloor.Alive)
         {
             alive = true;
-            Floorcolor.material.SetTexture("_MainTex", grass);
+            //Floorcolor.material.SetTexture("_MainTex", grass);
         }
         else
         {
             alive = false;
-            Floorcolor.material.SetTexture("_MainTex", water);
+            //Floorcolor.material.SetTexture("_MainTex", water);
         }
 	}
 
@@ -48,16 +50,14 @@ public class cellManager : MonoBehaviour {
     {
         neighbourCount = n;
     }
-    //public void CurrentState(bool i)
-    //{
-    //    if (i == true)
-    //    {
-    //        status = cellStateforfloor.Alive;
-    //    }
+ 
+    public Vector3 getPos()
+    {
+        return position;
+    }
 
-    //    else 
-    //    {
-    //        status = cellStateforfloor.Dead;
-    //    }
-    //}
+    public void setPos(Vector3 pos)
+    {
+        position = pos;
+    }
 }

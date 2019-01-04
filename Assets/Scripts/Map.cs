@@ -8,7 +8,7 @@ public class Map : MonoBehaviour {
 
 
     public float fillAmount;
-
+   
     public GameObject[,] cellMap;
     public GameObject[,] cellMap2;
     public int num;
@@ -21,6 +21,7 @@ public class Map : MonoBehaviour {
     public Slider mainSlider;
     public Text widthField;
     public Text heightField;
+
     public void generateMap()
     {
 
@@ -33,8 +34,6 @@ public class Map : MonoBehaviour {
             {
                 cellMap[i, x] = (Instantiate(floor, new Vector3(i * 1, 0, x * 1), Quaternion.identity));
                 cellMap[i, x].transform.SetParent(this.transform);
-                cellMap2 = cellMap;
-
             }
         }
 
@@ -53,6 +52,8 @@ public class Map : MonoBehaviour {
                 }
             }
         }
+
+        cellMap2 = cellMap;
     }
 
     public void CreateMesh()
@@ -108,6 +109,17 @@ public class Map : MonoBehaviour {
         fillAmount = mainSlider.value;
     }
 
+    public void delete()
+    {
+        for (int w = 0; w < width; w++)
+        {
+            for (int h = 0; h < height; h++)
+            {
+                Destroy(cellMap[w, h]);
+                Destroy(cellMap2[w, h]);
+            }
+        }
+    }
 
     public void OnButtonClick()
     {
