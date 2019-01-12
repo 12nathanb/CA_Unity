@@ -27,11 +27,13 @@ public class cellManager : MonoBehaviour {
 		if (status == cellStateforfloor.Alive)
         {
             alive = true;
+            this.GetComponent<MeshRenderer>().enabled = true;
             //Floorcolor.material.SetTexture("_MainTex", grass);
         }
         else
         {
             alive = false;
+            this.GetComponent<MeshRenderer>().enabled = false;
             //Floorcolor.material.SetTexture("_MainTex", water);
         }
 	}

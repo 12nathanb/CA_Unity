@@ -37,6 +37,8 @@ GameObject:
   m_Component:
   - component: {fileID: 4248517811186864}
   - component: {fileID: 114922411945247958}
+  - component: {fileID: 33737751091288262}
+  - component: {fileID: 23895570421738874}
   m_Layer: 0
   m_Name: Floor
   m_TagString: Untagged
@@ -71,6 +73,41 @@ Transform:
   m_Father: {fileID: 4248517811186864}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
+--- !u!23 &23895570421738874
+MeshRenderer:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1350569739545112}
+  m_Enabled: 1
+  m_CastShadows: 1
+  m_ReceiveShadows: 1
+  m_DynamicOccludee: 1
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RenderingLayerMask: 4294967295
+  m_Materials:
+  - {fileID: 0}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 0
+  m_SelectedEditorRenderState: 3
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
 --- !u!23 &23958152303669176
 MeshRenderer:
   m_ObjectHideFlags: 1
@@ -106,6 +143,13 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+--- !u!33 &33737751091288262
+MeshFilter:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1350569739545112}
+  m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
 --- !u!102 &102085300466380386
 TextMesh:
   serializedVersion: 3
@@ -143,3 +187,4 @@ MonoBehaviour:
   neighbourCount: 0
   grass: {fileID: 2800000, guid: e249b6a7df5e70b41b5483454018ef9c, type: 3}
   water: {fileID: 2800000, guid: c89518e7c6438fa45a3a53fccd8952f3, type: 3}
+  position: {x: 0, y: 0, z: 0}
