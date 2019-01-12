@@ -9,9 +9,9 @@ public class MeshGenerator : MonoBehaviour
     List<Vector3> vertices;
     List<int> triangles;
 
-    public void GenerateMesh(GameObject[,] map, float squareSize)
+    public void GenerateMesh(GameObject[,] map, int mapHeight, int mapWidth, float squareSize)
     {
-        squareGrid = new SquareGrid(map, squareSize);
+        squareGrid = new SquareGrid(map, mapHeight, mapWidth, squareSize);
 
         vertices = new List<Vector3>();
         triangles = new List<int>();
@@ -156,12 +156,11 @@ public class MeshGenerator : MonoBehaviour
     {
         public Square[,] squares;
 
-        public SquareGrid(GameObject[,] map, float squareSize)
+        public SquareGrid(GameObject[,] map, int mapHeight, int mapWidth, float squareSize)
         {
             int nodeCountX = map.GetLength(0);
             int nodeCountY = map.GetLength(1);
-            float mapWidth = nodeCountX * squareSize;
-            float mapHeight = nodeCountY * squareSize;
+            
 
             ControlNode[,] controlNodes = new ControlNode[nodeCountX, nodeCountY];
 
@@ -169,7 +168,8 @@ public class MeshGenerator : MonoBehaviour
             {
                 for (int y = 0; y < nodeCountY; y++)
                 {
-                    Vector3 pos = new Vector3(-mapWidth / 2 + x * squareSize + squareSize / 2, 0, -mapHeight / 2 + y * squareSize + squareSize / 2);
+                    //Vector3 pos = new Vector3(-mapWidth / 2 + x * squareSize + squareSize / 2, 0, -mapHeight / 2 + y * squareSize + squareSize / 2);
+                   Vector3 pos = new Vector3( x  , 0,  y);
                     controlNodes[x, y] = new ControlNode(pos, map[x, y].GetComponent<cellManager>().GetState() == cellStateforfloor.Alive, squareSize);
                 }
             }

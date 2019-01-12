@@ -33,7 +33,7 @@ public class Map : MonoBehaviour {
             for (int x = 0; x < height; x++)
             {
                 cellMap[i, x] = (Instantiate(floor, new Vector3(i * 1, 0, x * 1), Quaternion.identity));
-                cellMap[i, x].transform.SetParent(this.transform);
+                //cellMap[i, x].transform.SetParent(this.transform);
             }
         }
 
@@ -59,7 +59,7 @@ public class Map : MonoBehaviour {
     public void CreateMesh()
     {
         MeshGenerator meshGen = GetComponent<MeshGenerator>();
-        meshGen.GenerateMesh(cellMap, 1);
+        meshGen.GenerateMesh(cellMap, height, width, 1);
     }
 
 
