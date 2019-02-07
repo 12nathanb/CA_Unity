@@ -9,26 +9,32 @@ public class Map : MonoBehaviour {
     public float fillAmount;
 
     public int[,] cellMap;
-    public int[,] cellMap2;
-    public int num;
-    public GameObject floor;
-    TextMesh text;
 
-    public List<Vector3> newVerts;
-    List<int> newTriangle;
+    List<string> TextureNames;
 
     public Slider mainSlider;
+
     public Text widthField;
     public Text heightField;
+    public Text refineAmountText;
+    public Text seedText;
+
+    public Dropdown texDrop;
+
+    public Toggle useRandomSeed;
+
+    public List<Material> textures;
+
     public int refineAmount;
     public string seed;
     public bool randomSeed;
     float spaceOfTerrain;
+
     public void generateMap()
     {
 
         cellMap = new int[width, height];
-        cellMap2 = new int[width, height];
+      
 
         RandomLevelgen();
 
@@ -113,18 +119,16 @@ public class Map : MonoBehaviour {
 
                 if (neighbours > 4)
                 {
-                    cellMap2[w, h] = 1;
+                    cellMap[w, h] = 1;
                 }
 
                 if (neighbours < 4)
                 {
-                    cellMap2[w, h] = 0;
+                    cellMap[w, h] = 0;
                 }
 
             }
         }
-
-        cellMap = cellMap2;
     }
     // Update is called once per frame
     void Update()
@@ -132,6 +136,9 @@ public class Map : MonoBehaviour {
 
         int.TryParse(heightField.text.ToString(), out height);
         int.TryParse(widthField.text.ToString(), out width);
+        int.TryParse(refineAmountText.text.ToString(), out refineAmount);
+        seed = seedText.text.ToString();
+        randomSeed = useRandomSeed;
         spaceOfTerrain = mainSlider.value;
     }
 
