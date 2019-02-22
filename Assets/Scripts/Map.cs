@@ -30,6 +30,10 @@ public class Map : MonoBehaviour {
     public bool randomSeed;
     float spaceOfTerrain;
 
+    bool playRefine = false;
+
+    int[,] borderOfTheLevel;
+
     public void generateMap()
     {
 
@@ -43,9 +47,18 @@ public class Map : MonoBehaviour {
             Progress();
         }
 
+
+
+        CreateBorder();
+        //CreateMesh(cellMap);
+        CreateMesh(borderOfTheLevel);
+    }
+
+    void CreateBorder()
+    {
         int border = 1;
 
-        int[,] borderOfTheLevel = new int[width + border * 2, height + border * 2];
+        borderOfTheLevel = new int[width + border * 2, height + border * 2];
 
         for (int x = 0; x < borderOfTheLevel.GetLength(0); x++)
         {
@@ -69,8 +82,6 @@ public class Map : MonoBehaviour {
             }
 
         }
-        //CreateMesh(cellMap);
-        CreateMesh(borderOfTheLevel);
     }
 
     void RandomLevelgen()
@@ -140,8 +151,22 @@ public class Map : MonoBehaviour {
         seed = seedText.text.ToString();
         randomSeed = useRandomSeed;
         spaceOfTerrain = mainSlider.value;
+
+        if(playRefine == true)
+        {
+            Progress();
+            CreateBorder();
+            CreateMesh(borderOfTheLevel);
+        }
     }
 
+    public void Play()
+    {
+      
+            playRefine = true;
+       
+
+    }
 
    
 
