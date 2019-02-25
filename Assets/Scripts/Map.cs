@@ -34,6 +34,13 @@ public class Map : MonoBehaviour {
 
     int[,] borderOfTheLevel;
 
+    public Text countDown;
+
+    void Start()
+    {
+        
+    }
+
     public void generateMap()
     {
 
@@ -49,9 +56,9 @@ public class Map : MonoBehaviour {
 
 
 
-        CreateBorder();
-        //CreateMesh(cellMap);
-        CreateMesh(borderOfTheLevel);
+        //CreateBorder();
+        //CreateMesh(borderOfTheLevel);
+        create3Dworld(cellMap);
     }
 
     void CreateBorder()
@@ -93,6 +100,8 @@ public class Map : MonoBehaviour {
 
         System.Random randomSeedGenerator = new System.Random(seed.GetHashCode());
 
+      
+
         for (int x = 0; x < width; x++)
         {
             for (int z = 0; z < height; z++)
@@ -105,9 +114,41 @@ public class Map : MonoBehaviour {
                 {
                     cellMap[x, z] = (randomSeedGenerator.Next(0, 100) < spaceOfTerrain) ? 1 : 0;
                 }
+
+                
+
+                
             }
         }
 
+    }
+
+    public void create3Dworld(int[,] cell)
+    {
+        GameObject[,] world;
+
+        world = new GameObject[width, height];
+
+        for (int x = 0; x < width; x++)
+        {
+            for (int z = 0; z < height; z++)
+            {
+                if (cell[x, z] == 0)
+                {
+                    world[x, z] = GameObject.CreatePrimitive(PrimitiveType.Cube);
+                    world[x, z].transform.position = new Vector3(x * 1,0, z * 1);
+                    world[x, z].gameObject.GetComponent<MeshRenderer>().material.color = Color.green;
+                }
+
+                if (cell[x, z] == 1)
+                {
+                    
+                    world[x, z].transform.position = new Vector3(x * 1, 0, z * 1);
+                    world[x, z].transform.localScale = new Vector3(1, 0.5f, 1);
+                    world[x, z].gameObject.GetComponent<MeshRenderer>().material.color = Color.blue;
+                }
+            }
+        }
     }
 
     public void CreateMesh(int[,] cell)
@@ -121,6 +162,8 @@ public class Map : MonoBehaviour {
 
     void Progress()
     {
+        int counter = width * height;
+
         for (int w = 0; w < width; w++)
         {
             for (int h = 0; h < height; h++)
@@ -137,6 +180,9 @@ public class Map : MonoBehaviour {
                 {
                     cellMap[w, h] = 0;
                 }
+                counter--;
+               
+
 
             }
         }
@@ -160,7 +206,9 @@ public class Map : MonoBehaviour {
         }
     }
 
-    public void Play()
+    
+
+        public void Play()
     {
       
             playRefine = true;
