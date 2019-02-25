@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-enum cellType {air, grass, water, sand};
+public enum cellType {air, grass, water, sand};
 
 public class cell : MonoBehaviour {
 
@@ -13,10 +13,16 @@ public class cell : MonoBehaviour {
 	// Use this for initialization
 	void Start ()
     {
-        cellOBJ = GameObject.CreatePrimitive(PrimitiveType.Cube);
-        setState(cellType.air);	
+       
+        
 	}
 	
+    public void createCells()
+    {
+        GameObject temp = GameObject.CreatePrimitive(PrimitiveType.Cube);
+        cellOBJ = temp;
+        setState(cellType.air);
+    }
 	// Update is called once per frame
 	void Update ()
     {
@@ -44,22 +50,55 @@ public class cell : MonoBehaviour {
 
     }
 
-    void setState(cellType state)
+    public void setState(cellType state)
     {
         status = state;
     }
 
-    cellType getState()
+    public cellType getState()
     {
         return status;
     }
 
-    void setPosition(Vector3 pos)
+    public int getStateInt()
+    {
+        if (status == cellType.grass)
+        {
+            return 1;
+        }
+        else
+        {
+            return 0;
+        }
+
+    }
+
+    public void setStateFromInt(int type)
+    {
+        if (type == 0)
+        {
+            setState(cellType.air);
+        }
+        else if (type == 1)
+        {
+            setState(cellType.grass);
+        }
+        else if (type == 2)
+        {
+            setState(cellType.water);
+        }
+        else if (type == 3)
+        {
+            setState(cellType.sand);
+        }
+    }
+
+    public void setPosition(Vector3 pos)
     {
         Position = pos;
     }
 
-    Vector3 getPosition()
+   public Vector3 getPosition()
     {
         return Position;
     }

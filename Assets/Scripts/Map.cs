@@ -8,7 +8,7 @@ public class Map : MonoBehaviour {
 
     public float fillAmount;
 
-    public int[,] cellMap;
+    public cell[,] cellMap;
 
     List<string> TextureNames;
 
@@ -44,8 +44,8 @@ public class Map : MonoBehaviour {
     public void generateMap()
     {
 
-        cellMap = new int[width, height];
-      
+        cellMap = new cell[width, height];
+        
 
         RandomLevelgen();
 
@@ -76,7 +76,7 @@ public class Map : MonoBehaviour {
                 if (x >= border && x < width + border && z >= border && z < height + border)
                 {
 
-                    borderOfTheLevel[x, z] = cellMap[x - border, z - border];
+                    //borderOfTheLevel[x, z] = cellMap[x - border, z - border];
 
                 }
                 else
@@ -106,13 +106,16 @@ public class Map : MonoBehaviour {
         {
             for (int z = 0; z < height; z++)
             {
+
+                cellMap[x, z].createCells();
+
                 if (x == 0 || x == width - 1 || z == 0 || z == height - 1)
                 {
-                    cellMap[x, z] = 1;
+                    cellMap[x, z].setState(cellType.grass);
                 }
                 else
                 {
-                    cellMap[x, z] = (randomSeedGenerator.Next(0, 100) < spaceOfTerrain) ? 1 : 0;
+                    cellMap[x, z].setStateFromInt((randomSeedGenerator.Next(0, 100) < spaceOfTerrain) ? 1 : 0);
                 }
 
                 
@@ -123,7 +126,7 @@ public class Map : MonoBehaviour {
 
     }
 
-    public void create3Dworld(int[,] cell)
+    public void create3Dworld(cell[,] Cell)
     {
         GameObject[,] world;
 
@@ -133,14 +136,14 @@ public class Map : MonoBehaviour {
         {
             for (int z = 0; z < height; z++)
             {
-                if (cell[x, z] == 0)
+                if (Cell[x, z].getState() == cellType.grass)
                 {
                     world[x, z] = GameObject.CreatePrimitive(PrimitiveType.Cube);
                     world[x, z].transform.position = new Vector3(x * 1,0, z * 1);
                     world[x, z].gameObject.GetComponent<MeshRenderer>().material.color = Color.green;
                 }
 
-                if (cell[x, z] == 1)
+                if (Cell[x, z].getState() == cellType.water)
                 {
                     
                     world[x, z].transform.position = new Vector3(x * 1, 0, z * 1);
@@ -173,12 +176,12 @@ public class Map : MonoBehaviour {
 
                 if (neighbours > 4)
                 {
-                    cellMap[w, h] = 1;
+                    cellMap[w, h].setState(cellType.grass);
                 }
 
                 if (neighbours < 4)
                 {
-                    cellMap[w, h] = 0;
+                    cellMap[w, h].setState(cellType.water);
                 }
                 counter--;
                
@@ -230,7 +233,7 @@ public class Map : MonoBehaviour {
                 { //stay within map bounds
                     if (neighbourX != gridX || neighbourY != gridY)
                     { //don't consider tile we're looking at
-                        wallCount += cellMap[neighbourX, neighbourY];
+                        wallCount += cellMap[neighbourX, neighbourY].getStateInt();
                         //if it's a wall, increase
                     }
                     
