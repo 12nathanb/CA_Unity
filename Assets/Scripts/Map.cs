@@ -9,7 +9,8 @@ public class Map : MonoBehaviour {
     public float fillAmount;
 
     public cell[,] cellMap;
-
+    public GameObject[,] cellMapObjects;
+    public GameObject cellPrefab;
     List<string> TextureNames;
 
     public Slider mainSlider;
@@ -45,51 +46,30 @@ public class Map : MonoBehaviour {
     {
 
         cellMap = new cell[width, height];
-        
 
+        cellMapObjects = new GameObject[width, height];
+
+        for (int x = 0; x < width; x++)
+        {
+            for (int z = 0; z < height; z++)
+            {
+             cellMapObjects[x, z] = (GameObject)Instantiate(cellPrefab, new Vector3(x, 0, z), Quaternion.identity);
+             cellMap[x, z] = cellMapObjects[x, z].GetComponent<cell>();
+             cellMap[x, z].createCells();
+             
+            }
+        }
+
+    
         RandomLevelgen();
 
         for(int i = 0; i < refineAmount; i++)
-        {
-            Progress();
-        }
-
-
-
-        //CreateBorder();
-        //CreateMesh(borderOfTheLevel);
-        create3Dworld(cellMap);
-    }
-
-    void CreateBorder()
-    {
-        int border = 1;
-
-        borderOfTheLevel = new int[width + border * 2, height + border * 2];
-
-        for (int x = 0; x < borderOfTheLevel.GetLength(0); x++)
-        {
-
-            for (int z = 0; z < borderOfTheLevel.GetLength(1); z++)
-            {
-
-                if (x >= border && x < width + border && z >= border && z < height + border)
-                {
-
-                    //borderOfTheLevel[x, z] = cellMap[x - border, z - border];
-
-                }
-                else
-                {
-
-                    borderOfTheLevel[x, z] = 1;
-
-                }
-
-            }
-
+       {
+      Progress();
         }
     }
+
+    
 
     void RandomLevelgen()
     {
@@ -106,58 +86,23 @@ public class Map : MonoBehaviour {
         {
             for (int z = 0; z < height; z++)
             {
-
-                cellMap[x, z].createCells();
-
                 if (x == 0 || x == width - 1 || z == 0 || z == height - 1)
                 {
-                    cellMap[x, z].setState(cellType.grass);
+                    cellMap[x, z].setState(cellType.water);
+                     cellMap[x, z].SelectedUpdate();                
                 }
                 else
                 {
                     cellMap[x, z].setStateFromInt((randomSeedGenerator.Next(0, 100) < spaceOfTerrain) ? 1 : 0);
+                     cellMap[x, z].SelectedUpdate();
                 }
 
-                
+               
 
                 
             }
         }
 
-    }
-
-    public void create3Dworld(cell[,] Cell)
-    {
-        GameObject[,] world;
-
-        world = new GameObject[width, height];
-
-        for (int x = 0; x < width; x++)
-        {
-            for (int z = 0; z < height; z++)
-            {
-                if (Cell[x, z].getState() == cellType.grass)
-                {
-                    world[x, z] = GameObject.CreatePrimitive(PrimitiveType.Cube);
-                    world[x, z].transform.position = new Vector3(x * 1,0, z * 1);
-                    world[x, z].gameObject.GetComponent<MeshRenderer>().material.color = Color.green;
-                }
-
-                if (Cell[x, z].getState() == cellType.water)
-                {
-                    
-                    world[x, z].transform.position = new Vector3(x * 1, 0, z * 1);
-                    world[x, z].transform.localScale = new Vector3(1, 0.5f, 1);
-                    world[x, z].gameObject.GetComponent<MeshRenderer>().material.color = Color.blue;
-                }
-            }
-        }
-    }
-
-    public void CreateMesh(int[,] cell)
-    {
-        MeshGenerator meshGen = GetComponent<MeshGenerator>();
-        meshGen.GenerateMesh(cell, 1);
     }
 
 
@@ -165,8 +110,6 @@ public class Map : MonoBehaviour {
 
     void Progress()
     {
-        int counter = width * height;
-
         for (int w = 0; w < width; w++)
         {
             for (int h = 0; h < height; h++)
@@ -183,12 +126,14 @@ public class Map : MonoBehaviour {
                 {
                     cellMap[w, h].setState(cellType.water);
                 }
-                counter--;
+                
                
-
+                 cellMap[w, h].SelectedUpdate();
 
             }
         }
+
+
     }
     // Update is called once per frame
     void Update()
@@ -204,8 +149,7 @@ public class Map : MonoBehaviour {
         if(playRefine == true)
         {
             Progress();
-            CreateBorder();
-            CreateMesh(borderOfTheLevel);
+
         }
     }
 
@@ -224,6 +168,9 @@ public class Map : MonoBehaviour {
     int GetSurroundingWallCount(int gridX, int gridY)
     {
         int wallCount = 0;
+        int sandCount = 0;
+        int waterCount = 0;
+        int dirtCount = 0;
         //check 8 tiles surrounding current one, however this could be changed depending on desired effect
         for (int neighbourX = gridX - 1; neighbourX <= gridX + 1; neighbourX++)
         { //horiz
@@ -234,6 +181,7 @@ public class Map : MonoBehaviour {
                     if (neighbourX != gridX || neighbourY != gridY)
                     { //don't consider tile we're looking at
                         wallCount += cellMap[neighbourX, neighbourY].getStateInt();
+                       
                         //if it's a wall, increase
                     }
                     

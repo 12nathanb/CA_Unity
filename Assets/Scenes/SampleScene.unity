@@ -2095,6 +2095,7 @@ MonoBehaviour:
   width: 100
   height: 50
   fillAmount: 0.297
+  cellPrefab: {fileID: 1350569739545112, guid: e6f5915be59539f4186bbdd3b5c81f05, type: 2}
   mainSlider: {fileID: 445764059}
   widthField: {fileID: 65498729}
   heightField: {fileID: 598750701}
@@ -2106,6 +2107,7 @@ MonoBehaviour:
   refineAmount: 0
   seed: 
   randomSeed: 0
+  countDown: {fileID: 0}
 --- !u!1 &2003213386
 GameObject:
   m_ObjectHideFlags: 0

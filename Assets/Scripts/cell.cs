@@ -6,47 +6,45 @@ public enum cellType {air, grass, water, sand};
 
 public class cell : MonoBehaviour {
 
-    cellType status;
+    public cellType status;
     Vector3 Position;
     GameObject cellOBJ;
+
+    cellManager manager;
 
 	// Use this for initialization
 	void Start ()
     {
-       
+       manager = this.gameObject.GetComponent<cellManager>();
         
 	}
 	
     public void createCells()
     {
-        GameObject temp = GameObject.CreatePrimitive(PrimitiveType.Cube);
-        cellOBJ = temp;
-        setState(cellType.air);
+        //GameObject temp = GameObject.CreatePrimitive(PrimitiveType.Cube);
+        //cellOBJ = temp;
+        status = cellType.air;
     }
 	// Update is called once per frame
-	void Update ()
+	public void SelectedUpdate ()
     {
-        cellOBJ.transform.position = Position;
 
-        if (status == cellType.air)
-        {
-            cellOBJ.SetActive(false);
-        }
-        else if (status == cellType.water)
-        {
-            cellOBJ.gameObject.GetComponent<MeshRenderer>().material.color = Color.blue;
-            cellOBJ.SetActive(true);
-        }
-        else if (status == cellType.grass)
-        {
-            cellOBJ.gameObject.GetComponent<MeshRenderer>().material.color = Color.green;
-            cellOBJ.SetActive(true);
-        }
-        if (status == cellType.sand)
-        {
-            cellOBJ.gameObject.GetComponent<MeshRenderer>().material.color = Color.yellow;
-            cellOBJ.SetActive(true);
-        }
+    if (status == cellType.air)
+       {
+            this.gameObject.GetComponent<MeshRenderer>().material.color = Color.white;
+       }
+       else if (status == cellType.grass)
+       {
+           this.gameObject.GetComponent<MeshRenderer>().material.color = Color.green;
+       }
+       else if (status == cellType.water)
+       {
+           this.gameObject.GetComponent<MeshRenderer>().material.color = Color.blue;
+       }
+       else if (status == cellType.sand)
+       {
+           this.gameObject.GetComponent<MeshRenderer>().material.color = Color.yellow;
+       }
 
     }
 
@@ -75,21 +73,22 @@ public class cell : MonoBehaviour {
 
     public void setStateFromInt(int type)
     {
+       
         if (type == 0)
-        {
-            setState(cellType.air);
-        }
-        else if (type == 1)
         {
             setState(cellType.grass);
         }
-        else if (type == 2)
+        else if (type == 1)
         {
             setState(cellType.water);
         }
-        else if (type == 3)
+        else if (type == 2)
         {
             setState(cellType.sand);
+        }
+        else
+        {
+            setState(cellType.air);
         }
     }
 
