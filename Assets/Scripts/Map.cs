@@ -12,14 +12,20 @@ public class Map : MonoBehaviour {
     public cell[,] cellMap;
     public GameObject[,] cellMapObjects;
     public GameObject cellPrefab;
+    List<string> TextureNames;
 
     public Slider mainSlider;
     public Dropdown dropdown;
+
+    public InputField heightInput;
+    public InputField widthInput;
+    public InputField seedInput;
     int dropDownValue;
     public Text widthField;
     public Text heightField;
     public Text refineAmountText;
     public Text seedText;
+
     public Toggle useRandomSeed;
 
     public int refineAmount;
@@ -55,11 +61,6 @@ public class Map : MonoBehaviour {
 
     
         RandomLevelgen();
-
-        for(int i = 0; i < refineAmount; i++)
-       {
-         Progress();
-        }
     }
 
     
@@ -131,14 +132,48 @@ public class Map : MonoBehaviour {
     // Update is called once per frame
     void Update()
     {   
+        if (dropdown.value != 10)
+        {
+            heightInput.image.color = Color.black;
+            widthInput.image.color = Color.black;
+            heightField.gameObject.SetActive(false);
+            widthField.gameObject.SetActive(false);
+        }
+        else
+        {
+            heightField.gameObject.SetActive(true);
+            widthField.gameObject.SetActive(true);
+            heightInput.image.color = Color.white;
+            widthInput.image.color = Color.white;
+        }
+
+    
+
         int.TryParse(refineAmountText.text.ToString(), out refineAmount);
-        seed = seedText.text.ToString();
-        randomSeed = useRandomSeed;
-        spaceOfTerrain = mainSlider.value;
+
+        randomSeed = true;
+
+        if(useRandomSeed.isOn)
+        {      
+            randomSeed = true;
+            seedInput.image.color = Color.black;
+        }
+        else 
+        {
+            seed = seedText.text.ToString();
+            randomSeed = false;
+            seedInput.image.color = Color.white;
+        }
         
+        spaceOfTerrain = mainSlider.value;
         if(playRefine == true)
         {
+            for(int i = 0; i < refineAmount; i++)
+         {
             StartCoroutine(playProgress());
+         }
+
+         playRefine = false;
 
         }
     }

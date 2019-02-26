@@ -2056,7 +2056,7 @@ Canvas:
   m_GameObject: {fileID: 1152880263}
   m_Enabled: 1
   serializedVersion: 3
-  m_RenderMode: 1
+  m_RenderMode: 0
   m_Camera: {fileID: 534669904}
   m_PlaneDistance: 100
   m_PixelPerfect: 0
@@ -2804,13 +2804,13 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1756400313}
   m_TextComponent: {fileID: 598750701}
   m_Placeholder: {fileID: 1663101866}
-  m_ContentType: 0
+  m_ContentType: 2
   m_InputType: 0
   m_AsteriskChar: 42
-  m_KeyboardType: 0
+  m_KeyboardType: 4
   m_LineType: 0
   m_HideMobileInput: 0
-  m_CharacterValidation: 0
+  m_CharacterValidation: 1
   m_CharacterLimit: 0
   m_OnEndEdit:
     m_PersistentCalls:
@@ -3089,17 +3089,17 @@ MonoBehaviour:
   cellPrefab: {fileID: 1350569739545112, guid: e6f5915be59539f4186bbdd3b5c81f05, type: 2}
   mainSlider: {fileID: 445764059}
   dropdown: {fileID: 88590573}
+  heightInput: {fileID: 1756400312}
+  widthInput: {fileID: 2071287874}
+  seedInput: {fileID: 2128280841}
   widthField: {fileID: 65498729}
   heightField: {fileID: 598750701}
   refineAmountText: {fileID: 1033742940}
   seedText: {fileID: 1186304595}
-  texDrop: {fileID: 88590573}
   useRandomSeed: {fileID: 2003213388}
-  textures: []
   refineAmount: 0
   seed: 
   randomSeed: 0
-  countDown: {fileID: 0}
 --- !u!1 &1836470485
 GameObject:
   m_ObjectHideFlags: 0
@@ -3489,13 +3489,13 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 2051120043}
   m_TextComponent: {fileID: 1033742940}
   m_Placeholder: {fileID: 1464897700}
-  m_ContentType: 0
+  m_ContentType: 2
   m_InputType: 0
   m_AsteriskChar: 42
-  m_KeyboardType: 0
+  m_KeyboardType: 4
   m_LineType: 0
   m_HideMobileInput: 0
-  m_CharacterValidation: 0
+  m_CharacterValidation: 1
   m_CharacterLimit: 0
   m_OnEndEdit:
     m_PersistentCalls:
@@ -3624,13 +3624,13 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 2071287875}
   m_TextComponent: {fileID: 65498729}
   m_Placeholder: {fileID: 1596837111}
-  m_ContentType: 0
+  m_ContentType: 2
   m_InputType: 0
   m_AsteriskChar: 42
-  m_KeyboardType: 0
+  m_KeyboardType: 4
   m_LineType: 0
   m_HideMobileInput: 0
-  m_CharacterValidation: 0
+  m_CharacterValidation: 1
   m_CharacterLimit: 0
   m_OnEndEdit:
     m_PersistentCalls:
