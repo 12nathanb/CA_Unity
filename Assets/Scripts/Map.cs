@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using System.Collections;
 public class Map : MonoBehaviour {
 
     public int width, height;
@@ -11,20 +12,15 @@ public class Map : MonoBehaviour {
     public cell[,] cellMap;
     public GameObject[,] cellMapObjects;
     public GameObject cellPrefab;
-    List<string> TextureNames;
 
     public Slider mainSlider;
-
+    public Dropdown dropdown;
+    int dropDownValue;
     public Text widthField;
     public Text heightField;
     public Text refineAmountText;
     public Text seedText;
-
-    public Dropdown texDrop;
-
     public Toggle useRandomSeed;
-
-    public List<Material> textures;
 
     public int refineAmount;
     public string seed;
@@ -33,17 +29,14 @@ public class Map : MonoBehaviour {
 
     bool playRefine = false;
 
-    int[,] borderOfTheLevel;
-
-    public Text countDown;
-
     void Start()
     {
-        
+      
     }
 
     public void generateMap()
     {
+        setGridSize();
 
         cellMap = new cell[width, height];
 
@@ -65,7 +58,7 @@ public class Map : MonoBehaviour {
 
         for(int i = 0; i < refineAmount; i++)
        {
-      Progress();
+         Progress();
         }
     }
 
@@ -119,12 +112,12 @@ public class Map : MonoBehaviour {
 
                 if (neighbours > 4)
                 {
-                    cellMap[w, h].setState(cellType.grass);
+                    cellMap[w, h].setState(cellType.water);
                 }
 
                 if (neighbours < 4)
                 {
-                    cellMap[w, h].setState(cellType.water);
+                    cellMap[w, h].setState(cellType.grass);
                 }
                 
                
@@ -137,30 +130,110 @@ public class Map : MonoBehaviour {
     }
     // Update is called once per frame
     void Update()
-    {
-
-        int.TryParse(heightField.text.ToString(), out height);
-        int.TryParse(widthField.text.ToString(), out width);
+    {   
         int.TryParse(refineAmountText.text.ToString(), out refineAmount);
         seed = seedText.text.ToString();
         randomSeed = useRandomSeed;
         spaceOfTerrain = mainSlider.value;
-
+        
         if(playRefine == true)
         {
-            Progress();
+            StartCoroutine(playProgress());
 
         }
     }
 
-    
 
-        public void Play()
+    void setGridSize()
     {
-      
-            playRefine = true;
-       
+        if (dropdown.value == 0)
+        {
+            height = 10;
+            width = 10;
+            print("10x10");
+        }
+        else if (dropdown.value == 1)
+        {
+            height = 20;
+            width = 20;
+            print("20x20");
+        }
+        else if (dropdown.value == 2)
+        {
+            height = 30;
+            width = 30;
+            print("30x30");
+        }
+        else if (dropdown.value == 3)
+        {
+            height = 40;
+            width = 40;
+            print("40x40");
+        }
+        else if (dropdown.value == 4)
+        {
+            height = 50;
+            width = 50;
+            print("50x50");
+        }
+        else if (dropdown.value == 5)
+        {
+            height = 60;
+            width = 60;
+            print("60x60");
+        }
+        else if (dropdown.value == 6)
+        {
+            height = 70;
+            width = 70;
+            print("70x70");
+        }
+        else if (dropdown.value == 7)
+        {
+            height = 80;
+            width = 80;
+            print("80x80");
+        }
+        else if (dropdown.value == 8)
+        {
+            height = 90;
+            width = 90;
+            print("90x90");
+        }
+        else if (dropdown.value == 9)
+        {
+            height = 100;
+            width = 100;
+            print("100x100");
+        }
+        else if (dropdown.value == 10)
+        {
+            int.TryParse(heightField.text.ToString(), out height);
+            int.TryParse(widthField.text.ToString(), out width);
+            print("Custom");
+        }
 
+       
+       
+    }
+
+    IEnumerator playProgress()
+    {       
+        yield return new WaitForSeconds(1f);
+        Progress();
+    }
+
+    
+        public void Play()
+        {
+        if (playRefine == false)
+        {
+            playRefine = true;
+        }
+         else
+        {
+          playRefine = false;
+         } 
     }
 
    
@@ -182,12 +255,21 @@ public class Map : MonoBehaviour {
                     { //don't consider tile we're looking at
                         wallCount += cellMap[neighbourX, neighbourY].getStateInt();
                        
-                        //if it's a wall, increase
+                        if (cellMap[neighbourX, neighbourY].getState() == cellType.grass)
+                        {
+                            dirtCount++;
+                        }
+
+                          if (cellMap[neighbourX, neighbourY].getState() == cellType.water)
+                        {
+                            waterCount++;
+                        }
                     }
                     
                 }
                 else
                 {
+                    
                     wallCount++;
                     }
 
