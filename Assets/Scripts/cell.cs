@@ -7,6 +7,8 @@ public enum cellType {air, grass, water, sand};
 public class cell : MonoBehaviour {
 
     public cellType status;
+
+    int posIntArray;
     Vector3 Position;
     GameObject cellOBJ;
 
@@ -100,6 +102,16 @@ public class cell : MonoBehaviour {
    public Vector3 getPosition()
     {
         return Position;
+    }
+
+    public int getPosInArray()
+    {
+        return posIntArray;
+    }
+
+    public void setPosInArray(int temp)
+    {
+        posIntArray = temp;
     }
     
 }

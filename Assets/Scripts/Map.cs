@@ -48,6 +48,8 @@ public class Map : MonoBehaviour {
 
         cellMapObjects = new GameObject[width, height];
 
+        int counter = 0;
+
         for (int x = 0; x < width; x++)
         {
             for (int z = 0; z < height; z++)
@@ -55,7 +57,8 @@ public class Map : MonoBehaviour {
              cellMapObjects[x, z] = (GameObject)Instantiate(cellPrefab, new Vector3(x, 0, z), Quaternion.identity);
              cellMap[x, z] = cellMapObjects[x, z].GetComponent<cell>();
              cellMap[x, z].createCells();
-             
+             cellMap[x, z].setPosInArray(counter);
+             counter++;
             }
         }
 
@@ -313,6 +316,40 @@ public class Map : MonoBehaviour {
         return wallCount;
     }
 
+    public void Export()
+    {
+        for (int x = 0; x < width; x++)
+        {
+            for (int z = 0; z < height; z++)
+            {
+                Exporter.SaveWorld(cellMap[x,z]);
+            }
+
+        }
+    
+    }
+
+    public void Import()
+    {
+        for (int x = 0; x < width; x++)
+        {
+            for (int z = 0; z < height; z++)
+            {
+                WorldData data = Exporter.LoadWorld(cellMap[x,z].getPosInArray());
+                cellMap[x,z].setPosInArray(data.chunkNumber);
+                if(data.worldType == "grass")
+                {
+                     cellMap[x,z].setState(cellType.grass);
+                }
+                else if(data.worldType == "water")
+                {
+                    cellMap[x,z].setState(cellType.water);
+                }
+                cellMap[x,z].SelectedUpdate();
+            }
+
+        }
+    }
   
     bool RandomBool()
     {
