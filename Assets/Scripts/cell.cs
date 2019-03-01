@@ -117,5 +117,15 @@ public class cell : MonoBehaviour {
     {
         posIntArray = temp;
     }
+
+    public float getWorldHeight()
+    {
+        return height;
+    }
+
+    public void setWorldHeight(float h)
+    {
+        height = h;
+    }
     
 }

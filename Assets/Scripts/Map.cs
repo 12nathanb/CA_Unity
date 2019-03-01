@@ -350,7 +350,7 @@ public class Map : MonoBehaviour {
         {
             for (int z = 0; z < height; z++)
             {
-                WorldData data = Exporter.LoadWorld(cellMap[x,z].getPosInArray());
+                WorldData data = Improter.LoadWorld(cellMap[x,z].getPosInArray());
                 cellMap[x,z].setPosInArray(data.chunkNumber);
                 if(data.worldType == "grass")
                 {
@@ -360,6 +360,7 @@ public class Map : MonoBehaviour {
                 {
                     cellMap[x,z].setState(cellType.water);
                 }
+                cellMap[x,z].setWorldHeight(data.worldHeight);
                 cellMap[x,z].SelectedUpdate();
             }
 
