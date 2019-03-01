@@ -11,7 +11,7 @@ public class cell : MonoBehaviour {
     int posIntArray;
     Vector3 Position;
     GameObject cellOBJ;
-
+    public float height = 1;
     cellManager manager;
 
 	// Use this for initialization
@@ -37,10 +37,13 @@ public class cell : MonoBehaviour {
        }
        else if (status == cellType.grass)
        {
+             this.gameObject.transform.localScale = new Vector3(1, height, 1 );
+
            this.gameObject.GetComponent<MeshRenderer>().material.color = Color.green;
        }
        else if (status == cellType.water)
        {
+           this.gameObject.transform.localScale = new Vector3(1, 1, 1 );
            this.gameObject.GetComponent<MeshRenderer>().material.color = Color.blue;
        }
        else if (status == cellType.sand)
@@ -48,6 +51,7 @@ public class cell : MonoBehaviour {
            this.gameObject.GetComponent<MeshRenderer>().material.color = Color.yellow;
        }
 
+     
     }
 
     public void setState(cellType state)

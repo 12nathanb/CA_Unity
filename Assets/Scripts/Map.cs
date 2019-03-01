@@ -94,6 +94,15 @@ public class Map : MonoBehaviour {
                      cellMap[x, z].SelectedUpdate();
                 }
 
+                if (cellMap[x, z].getState() == cellType.grass)
+                {
+                    cellMap[x, z].height = Random.Range(1f, 2f);
+                    cellMap[x, z].SelectedUpdate();
+                }
+                else
+                {
+                    cellMap[x, z].height = 1;
+                }
                
 
                 
@@ -279,9 +288,8 @@ public class Map : MonoBehaviour {
     int GetSurroundingWallCount(int gridX, int gridY)
     {
         int wallCount = 0;
-        int sandCount = 0;
-        int waterCount = 0;
-        int dirtCount = 0;
+        float sum = 0;
+        int count = 0;
         //check 8 tiles surrounding current one, however this could be changed depending on desired effect
         for (int neighbourX = gridX - 1; neighbourX <= gridX + 1; neighbourX++)
         { //horiz
@@ -292,16 +300,14 @@ public class Map : MonoBehaviour {
                     if (neighbourX != gridX || neighbourY != gridY)
                     { //don't consider tile we're looking at
                         wallCount += cellMap[neighbourX, neighbourY].getStateInt();
-                       
-                        if (cellMap[neighbourX, neighbourY].getState() == cellType.grass)
+
+                        if(cellMap[neighbourX, neighbourY].getStateInt() == 1)
                         {
-                            dirtCount++;
+                            count++;
+                             sum += cellMap[neighbourX, neighbourY].height;
                         }
 
-                          if (cellMap[neighbourX, neighbourY].getState() == cellType.water)
-                        {
-                            waterCount++;
-                        }
+                      
                     }
                     
                 }
@@ -313,6 +319,8 @@ public class Map : MonoBehaviour {
 
             }
         }
+        sum = sum / count;
+        Debug.Log(" Amount "+ sum + " walls should be" + wallCount + " " + count);
         return wallCount;
     }
 
