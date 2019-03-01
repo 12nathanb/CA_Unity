@@ -44,9 +44,9 @@ public class Map : MonoBehaviour {
     {
         setGridSize();
 
-        cellMap = new cell[width, height];
+        instansiateArrays();
 
-        cellMapObjects = new GameObject[width, height];
+
 
         int counter = 0;
 
@@ -65,6 +65,14 @@ public class Map : MonoBehaviour {
     
         RandomLevelgen();
     }
+
+    void instansiateArrays()
+    {
+        cellMap = new cell[width, height];
+
+        cellMapObjects = new GameObject[width, height];
+    }
+
 
     
 
@@ -330,7 +338,7 @@ public class Map : MonoBehaviour {
         {
             for (int z = 0; z < height; z++)
             {
-                Exporter.SaveWorld(cellMap[x,z]);
+                Exporter.SaveWorld(cellMap[x,z], width, height);
             }
 
         }
@@ -339,11 +347,15 @@ public class Map : MonoBehaviour {
 
     public void Import()
     {
+    
+
         for (int x = 0; x < width; x++)
         {
             for (int z = 0; z < height; z++)
             {
-                WorldData data = Exporter.LoadWorld(cellMap[x,z].getPosInArray());
+                WorldData data = Importer.LoadWorld(cellMap[x,z].getPosInArray());
+
+
                 cellMap[x,z].setPosInArray(data.chunkNumber);
                 if(data.worldType == "grass")
                 {
