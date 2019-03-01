@@ -44,9 +44,9 @@ public class Map : MonoBehaviour {
     {
         setGridSize();
 
-        instansiateArrays();
+        cellMap = new cell[width, height];
 
-
+        cellMapObjects = new GameObject[width, height];
 
         int counter = 0;
 
@@ -65,14 +65,6 @@ public class Map : MonoBehaviour {
     
         RandomLevelgen();
     }
-
-    void instansiateArrays()
-    {
-        cellMap = new cell[width, height];
-
-        cellMapObjects = new GameObject[width, height];
-    }
-
 
     
 
@@ -313,6 +305,7 @@ public class Map : MonoBehaviour {
                         {
                             count++;
                              sum += cellMap[neighbourX, neighbourY].height;
+                             
                         }
 
                       
@@ -327,8 +320,14 @@ public class Map : MonoBehaviour {
 
             }
         }
-        sum = sum / count;
-        Debug.Log(" Amount "+ sum + " walls should be" + wallCount + " " + count);
+
+        if(cellMap[gridX, gridY].getStateInt() == 1)
+        {
+            sum = sum / count;
+            cellMap[gridX, gridY].height = sum;
+        }
+        
+        
         return wallCount;
     }
 
@@ -338,7 +337,7 @@ public class Map : MonoBehaviour {
         {
             for (int z = 0; z < height; z++)
             {
-                Exporter.SaveWorld(cellMap[x,z], width, height);
+                Exporter.SaveWorld(cellMap[x,z]);
             }
 
         }
@@ -347,15 +346,11 @@ public class Map : MonoBehaviour {
 
     public void Import()
     {
-    
-
         for (int x = 0; x < width; x++)
         {
             for (int z = 0; z < height; z++)
             {
-                WorldData data = Importer.LoadWorld(cellMap[x,z].getPosInArray());
-
-
+                WorldData data = Exporter.LoadWorld(cellMap[x,z].getPosInArray());
                 cellMap[x,z].setPosInArray(data.chunkNumber);
                 if(data.worldType == "grass")
                 {
