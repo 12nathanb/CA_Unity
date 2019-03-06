@@ -35,9 +35,13 @@ public class Map : MonoBehaviour {
 
     bool playRefine = false;
 
+    public TextAsset ruleTxt;
+    public string[] textArray;
+
+    List<int> ruleArray;
     void Start()
     {
-      
+     
     }
 
     public void generateMap()
@@ -111,9 +115,6 @@ public class Map : MonoBehaviour {
 
     }
 
-
-
-
     void Progress()
     {
         for (int w = 0; w < width; w++)
@@ -132,14 +133,10 @@ public class Map : MonoBehaviour {
                 {
                     cellMap[w, h].setState(cellType.grass);
                 }
-                
-               
-                 cellMap[w, h].SelectedUpdate();
 
+                cellMap[w, h].SelectedUpdate();
             }
         }
-
-
     }
     // Update is called once per frame
     void Update()
@@ -314,9 +311,8 @@ public class Map : MonoBehaviour {
                 }
                 else
                 {
-                    
                     wallCount++;
-                    }
+                }
 
             }
         }
@@ -333,36 +329,34 @@ public class Map : MonoBehaviour {
 
     public void Export()
     {
-        for (int x = 0; x < width; x++)
-        {
-            for (int z = 0; z < height; z++)
-            {
-                Exporter.SaveWorld(cellMap[x,z]);
-            }
-
-        }
+       
+                Exporter.SaveWorld(cellMap, width, height);
     
     }
 
     public void Import()
     {
+        int count = 0;
+
         for (int x = 0; x < width; x++)
         {
-            for (int z = 0; z < height; z++)
-            {
-                WorldData data = Improter.LoadWorld(cellMap[x,z].getPosInArray());
-                cellMap[x,z].setPosInArray(data.chunkNumber);
-                if(data.worldType == "grass")
-                {
-                     cellMap[x,z].setState(cellType.grass);
-                }
-                else if(data.worldType == "water")
-                {
-                    cellMap[x,z].setState(cellType.water);
-                }
-                cellMap[x,z].setWorldHeight(data.worldHeight);
-                cellMap[x,z].SelectedUpdate();
-            }
+           for (int z = 0; z < height; z++)
+           {
+               WorldData data = Improter.LoadWorld(cellMap[x,z].getPosInArray());
+               cellMap[x,z].setPosInArray(data.chunkNumber[count]);
+               if(data.worldType[count] == "grass")
+               {
+                    cellMap[x,z].setState(cellType.grass);
+               }
+               else if(data.worldType[count] == "water")
+               {
+                   cellMap[x,z].setState(cellType.water);
+               }
+               cellMap[x,z].setWorldHeight(data.worldHeight[count]);
+               cellMap[x,z].SelectedUpdate();
+
+               count++;
+           }
 
         }
     }
@@ -378,6 +372,21 @@ public class Map : MonoBehaviour {
             return false;
         }
         
+    }
+
+    public void LoadRuleText()
+    {
+        string text = ruleTxt.text;
+        textArray = text.Split(char.Parse(";"));
+
+        for (int i = 0; i < textArray.Length; i++)
+        {
+            if(textArray[i] == "Rule")
+            {
+                
+            }
+        }
+
     }
 
 }

@@ -5,7 +5,7 @@ public static class Improter {
 
 public static WorldData LoadWorld (int num)
 	{
-		string path = Application.persistentDataPath + "/Chunk" + num.ToString() + ".ctp";
+		string path = Application.persistentDataPath + "/Chunk.ctp";
 
 		if(File.Exists(path))
 		{

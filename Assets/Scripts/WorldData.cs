@@ -5,17 +5,29 @@ using UnityEngine;
 [System.Serializable]
 public class WorldData	{
 
-	public int chunkNumber;
-	public string worldType;
+	public int[] chunkNumber;
+	public string[] worldType;
+	public float[] worldHeight;
 
-	public float worldHeight;
-	public WorldData(cell Cell)
+	public WorldData(cell[,] Cell, int width, int height)
 	{
-		chunkNumber = Cell.getPosInArray();
+        chunkNumber = new int[width * height];
+        worldType = new string[width * height];
+        worldHeight = new float[width * height];
 
-		worldType = Cell.getState().ToString();
+       int counter = 0;
+        for (int w = 0; w < width; w++)
+        {
+            for(int h = 0; h < height; h++)
+            {
+                chunkNumber[counter] = Cell[w, h].getPosInArray();
+                worldType[counter] = Cell[w, h].getState().ToString();
+                worldHeight[counter] = Cell[w, h].getWorldHeight();
 
-		worldHeight = Cell.getWorldHeight();
+                counter++;
+            }
+        }
+	
 	}
 	
 }
