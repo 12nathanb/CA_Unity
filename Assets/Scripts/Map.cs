@@ -101,6 +101,7 @@ public class Map : MonoBehaviour {
                 if (cellMap[x, z].getState() == cellType.grass)
                 {
                     cellMap[x, z].height = Random.Range(1f, 2f);
+                    cellMap[x, z].Tree = RandomBool();
                     cellMap[x, z].SelectedUpdate();
                 }
                 else
@@ -363,7 +364,7 @@ public class Map : MonoBehaviour {
   
     bool RandomBool()
     {
-        if (Random.value > fillAmount)
+        if (Random.value > 0.5)
         {
             return true;
         }

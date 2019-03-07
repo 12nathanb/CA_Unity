@@ -14,6 +14,10 @@ public class cell : MonoBehaviour {
     public float height = 1;
     cellManager manager;
 
+    public bool Tree = false;
+    public GameObject TreePrefab;
+
+    GameObject treeObj;
 	// Use this for initialization
 	void Start ()
     {
@@ -38,18 +42,30 @@ public class cell : MonoBehaviour {
        else if (status == cellType.grass)
        {
              this.gameObject.transform.localScale = new Vector3(1, height, 1 );
-
            this.gameObject.GetComponent<MeshRenderer>().material.color = Color.green;
+
+           
        }
        else if (status == cellType.water)
        {
            this.gameObject.transform.localScale = new Vector3(1, 1, 1 );
            this.gameObject.GetComponent<MeshRenderer>().material.color = Color.blue;
+
        }
        else if (status == cellType.sand)
        {
            this.gameObject.GetComponent<MeshRenderer>().material.color = Color.yellow;
        }
+
+       if(Tree == true && status == cellType.grass)
+           {
+               treeObj = Instantiate(TreePrefab, new Vector3(this.transform.position.x, height, this.transform.position.z), Quaternion.identity);
+           }
+           else if (Tree == true && status != cellType.grass)
+           {
+               Destroy(treeObj);
+           }
+
 
      
     }
