@@ -42,13 +42,13 @@ public class Camera : MonoBehaviour {
 
         if (Input.mouseScrollDelta.y > 0 && this.transform.position.y > 10)
         {
-            float y = this.transform.position.y;
+            
             this.transform.position = new Vector3(this.transform.position.x, pos.y -= 10, this.transform.position.z);
         }
 
         if (Input.mouseScrollDelta.y < 0)
         {
-            float y = this.transform.position.y;
+        
             this.transform.position = new Vector3(this.transform.position.x, pos.y += 10, this.transform.position.z);
         }
     }

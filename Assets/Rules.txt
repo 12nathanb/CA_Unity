@@ -1,1 +1,9 @@
-Rule 1;neighbours > 4 = water;Rule 2;neighbours < 4 = grass;
+ Rule 0 
+ operator > 
+ amount 4 
+ output water 
+
+ Rule 1 
+ operator < 
+ amount 4 
+ output grass 

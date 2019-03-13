@@ -2,6 +2,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
+
 public class Map : MonoBehaviour {
 
     public int width, height;
@@ -32,16 +33,22 @@ public class Map : MonoBehaviour {
     public string seed;
     public bool randomSeed;
     float spaceOfTerrain;
-
+    public int ruleAmount;
     bool playRefine = false;
 
     public TextAsset ruleTxt;
     public string[] textArray;
 
-    List<int> ruleArray;
+    Rules[] ruleArray;
     void Start()
     {
-     
+    
+    ruleArray = new Rules[ruleAmount];
+     LoadRuleText();
+     Debug.Log(ruleArray[0].RuleName);
+     Debug.Log(ruleArray[0].Amount);
+     Debug.Log(ruleArray[0].Operator);
+     Debug.Log(ruleArray[0].Output);
     }
 
     public void generateMap()
@@ -116,26 +123,50 @@ public class Map : MonoBehaviour {
 
     }
 
+    void setCellState(int width, int height, string state)
+    {
+        if(state == "grass")
+        {
+            cellMap[width, height].setState(cellType.grass);
+        }
+         if(state == "water")
+        {
+            cellMap[width, height].setState(cellType.water);
+        }
+    }
     void Progress()
     {
         for (int w = 0; w < width; w++)
         {
             for (int h = 0; h < height; h++)
             {
-                int neighbours = GetSurroundingWallCount(w, h);
+                 int neighbours = GetSurroundingWallCount(w, h);
+
+                for (int r = 0; r < ruleAmount; r++)
+                {
+                    
+                    if(ruleArray[r].Operator == ">")
+                    {
+                        if (neighbours > ruleArray[r].Amount)
+                        {
+                           setCellState(w,h,ruleArray[r].Output);
+                        }
+                    }
+                    
+                    if(ruleArray[r].Operator == "<")
+                    {
+                        if (neighbours < ruleArray[r].Amount)
+                        {
+                            setCellState(w,h,ruleArray[r].Output);
+                        }
+                    }
                 
+                    
 
-                if (neighbours > 4)
-                {
-                    cellMap[w, h].setState(cellType.water);
+                   
+
+                    cellMap[w, h].SelectedUpdate();
                 }
-
-                if (neighbours < 4)
-                {
-                    cellMap[w, h].setState(cellType.grass);
-                }
-
-                cellMap[w, h].SelectedUpdate();
             }
         }
     }
@@ -378,16 +409,50 @@ public class Map : MonoBehaviour {
     public void LoadRuleText()
     {
         string text = ruleTxt.text;
-        textArray = text.Split(char.Parse(";"));
+        textArray = text.Split(char.Parse(" "));
+
+        int temp = 0;
+        string[] name = new string[2];
+        string[] op = new string[2];
+        int[] amount = new int[2];;
+        string[] output = new string[2];;
 
         for (int i = 0; i < textArray.Length; i++)
         {
-            if(textArray[i] == "Rule")
+            for (int r = 0; r < ruleAmount; r++)
             {
+                if(textArray[i] == "Rule")
+                {
+                    temp = int.Parse(textArray[i+1]);
+                    name[temp] = "Rule " + temp.ToString();
+                }
                 
+                if(textArray[i] == "operator")
+                {
+                  op[temp] = textArray[i+1];
+                }
+                if(textArray[i] == "amount")
+                {
+                    amount[temp] = int.Parse(textArray[i+1]);
+                }
+                if(textArray[i] == "output")
+                {
+                    output[temp] = textArray[i+1];
+                }
+                ruleArray[r] = new Rules(name[r], op[r], amount[r], output[r]);
             }
+            
+            
         }
 
+        
+
+        Debug.Log(name[1].ToString());
+        Debug.Log(op[0]);
+         Debug.Log(amount[0]);
+        Debug.Log(output[1]);
+
+        
     }
 
 }

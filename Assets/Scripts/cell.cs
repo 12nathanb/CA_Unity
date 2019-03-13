@@ -12,7 +12,6 @@ public class cell : MonoBehaviour {
     Vector3 Position;
     GameObject cellOBJ;
     public float height = 1;
-    cellManager manager;
 
     public bool Tree = false;
     public GameObject TreePrefab;
@@ -21,7 +20,6 @@ public class cell : MonoBehaviour {
 	// Use this for initialization
 	void Start ()
     {
-       manager = this.gameObject.GetComponent<cellManager>();
         
 	}
 	
