@@ -136,11 +136,15 @@ public class Map : MonoBehaviour {
     }
     void Progress()
     {
+        cell[,] tempCellArray;
+        tempCellArray = cellMap;
+
         for (int w = 0; w < width; w++)
         {
             for (int h = 0; h < height; h++)
             {
-                 int neighbours = GetSurroundingWallCount(w, h);
+                
+                 int neighbours = GetSurroundingWallCount(w, h, cellMap[w, h].getState());
 
                 for (int r = 0; r < ruleAmount; r++)
                 {
@@ -149,7 +153,8 @@ public class Map : MonoBehaviour {
                     {
                         if (neighbours > ruleArray[r].Amount)
                         {
-                           setCellState(w,h,ruleArray[r].Output);
+                            setCellState(w,h,ruleArray[r].Output);
+                            //tempCellArray[w, h].SelectedUpdate();
                         }
                     }
                     
@@ -158,19 +163,39 @@ public class Map : MonoBehaviour {
                         if (neighbours < ruleArray[r].Amount)
                         {
                             setCellState(w,h,ruleArray[r].Output);
+                            //tempCellArray[w, h].SelectedUpdate();
                         }
                     }
-                
-                    
 
-                   
-
-                    cellMap[w, h].SelectedUpdate();
+                    if(ruleArray[r].Operator == "=")
+                    {
+                        if (neighbours == ruleArray[r].Amount)
+                        {
+                            setCellState(w,h,ruleArray[r].Output);
+                           //tempCellArray[w, h].SelectedUpdate();
+                        }
+                    }
                 }
             }
         }
+
+        UpdateCellMap(tempCellArray);
     }
     // Update is called once per frame
+
+    void UpdateCellMap(cell[,] temp)
+    {
+        cellMap = temp;
+
+        for (int w = 0; w < width; w++)
+        {
+            for (int h = 0; h < height; h++)
+            {
+                cellMap[w,h].SelectedUpdate();
+            }
+
+        }
+    }
     void Update()
     {   
         if (dropdown.value != 10)
@@ -207,16 +232,8 @@ public class Map : MonoBehaviour {
         }
         
         spaceOfTerrain = mainSlider.value;
-        if(playRefine == true)
-        {
-            for(int i = 0; i < refineAmount; i++)
-         {
-            StartCoroutine(playProgress());
-         }
 
-         playRefine = false;
-
-        }
+        
     }
 
 
@@ -294,9 +311,21 @@ public class Map : MonoBehaviour {
     }
 
     IEnumerator playProgress()
-    {       
-        yield return new WaitForSeconds(1f);
-        Progress();
+    {      
+        if(playRefine == true)
+        {
+            for(int i = 0; i < refineAmount; i++)
+            {
+                Progress();
+                yield return new WaitForSeconds(0.5f);
+            }
+
+            playRefine = false;
+
+        }
+        print(Time.time);
+        
+        print(Time.time);
     }
 
     
@@ -305,6 +334,7 @@ public class Map : MonoBehaviour {
         if (playRefine == false)
         {
             playRefine = true;
+            StartCoroutine(playProgress());
         }
          else
         {
@@ -314,7 +344,7 @@ public class Map : MonoBehaviour {
 
    
 
-    int GetSurroundingWallCount(int gridX, int gridY)
+    int GetSurroundingWallCount(int gridX, int gridY, cellType type)
     {
         int wallCount = 0;
         float sum = 0;
@@ -330,7 +360,7 @@ public class Map : MonoBehaviour {
                     { //don't consider tile we're looking at
                         wallCount += cellMap[neighbourX, neighbourY].getStateInt();
 
-                        if(cellMap[neighbourX, neighbourY].getStateInt() == 1)
+                        if(cellMap[neighbourX, neighbourY].getState() == type)
                         {
                             count++;
                              sum += cellMap[neighbourX, neighbourY].height;
@@ -412,10 +442,10 @@ public class Map : MonoBehaviour {
         textArray = text.Split(char.Parse(" "));
 
         int temp = 0;
-        string[] name = new string[2];
-        string[] op = new string[2];
-        int[] amount = new int[2];;
-        string[] output = new string[2];;
+        string[] name = new string[ruleAmount];
+        string[] op = new string[ruleAmount];
+        int[] amount = new int[ruleAmount];
+        string[] output = new string[ruleAmount];
 
         for (int i = 0; i < textArray.Length; i++)
         {

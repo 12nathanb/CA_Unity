@@ -1,6 +1,6 @@
  Rule 0 
  operator > 
- amount 4 
+ amount 4
  output water 
 
  Rule 1 

@@ -55,14 +55,14 @@ public class cell : MonoBehaviour {
            this.gameObject.GetComponent<MeshRenderer>().material.color = Color.yellow;
        }
 
-       if(Tree == true && status == cellType.grass)
-           {
-               treeObj = Instantiate(TreePrefab, new Vector3(this.transform.position.x, height, this.transform.position.z), Quaternion.identity);
-           }
-           else if (Tree == true && status != cellType.grass)
-           {
-               Destroy(treeObj);
-           }
+    //    if(Tree == true && status == cellType.grass)
+    //        {
+    //            treeObj = Instantiate(TreePrefab, new Vector3(this.transform.position.x, height, this.transform.position.z), Quaternion.identity);
+    //        }
+    //        else if (Tree == true && status != cellType.grass)
+    //        {
+    //            Destroy(treeObj);
+    //        }
 
 
      
