@@ -37,6 +37,7 @@ public class Map : MonoBehaviour {
     bool playRefine = false;
     public string[] textArray;
 
+    private bool importing = false;
     public Rules[] ruleArray;
     void Start()
     {
@@ -57,7 +58,14 @@ public class Map : MonoBehaviour {
 
     public void generateMap()
     {
-        setGridSize();
+        if(importing == false)
+        {
+            setGridSize();
+        }
+        
+        cellMap = new cell[width, height];
+
+        cellMapObjects = new GameObject[width, height];
 
         int counter = 0;
 
@@ -72,8 +80,11 @@ public class Map : MonoBehaviour {
             }
         }
 
-    
+    if(importing == false)
+    {
         RandomLevelgen();
+    }
+
     }
 
     
@@ -287,9 +298,7 @@ public class Map : MonoBehaviour {
             int.TryParse(widthField.text.ToString(), out width);
         }
 
-       cellMap = new cell[width, height];
-
-     cellMapObjects = new GameObject[width, height];
+       
        
     }
 
@@ -382,13 +391,24 @@ public class Map : MonoBehaviour {
     public void Import()
     {
         int count = 0;
+            WorldData data = Importer.LoadWorld();
+               Debug.Log(data.worldType[count]);
+               width = data.width;
+               height = data.height;
+
+               importing = true;
+        generateMap();
 
         for (int x = 0; x < width; x++)
         {
            for (int z = 0; z < height; z++)
            {
-               WorldData data = Importer.LoadWorld(cellMap[x,z].getPosInArray());
-               cellMap[x,z].setPosInArray(data.chunkNumber[count]);
+                Debug.Log(data.worldType[count]);
+               
+               
+
+            // //    cellMap[x,z].setPosInArray(count);
+
                if(data.worldType[count] == "grass")
                {
                     cellMap[x,z].setState(cellType.grass);
@@ -397,13 +417,16 @@ public class Map : MonoBehaviour {
                {
                    cellMap[x,z].setState(cellType.water);
                }
-               cellMap[x,z].setWorldHeight(data.worldHeight[count]);
-               cellMap[x,z].SelectedUpdate();
+                  cellMap[x,z].setWorldHeight(data.worldHeight[count]);
+                cellMap[x,z].SelectedUpdate();
 
-               count++;
+                count++;
            }
 
         }
+
+        importing = false;
+        
     }
   
     bool RandomBool()

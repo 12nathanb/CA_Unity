@@ -9,12 +9,18 @@ public class WorldData	{
 	public string[] worldType;
 	public float[] worldHeight;
 
-	public WorldData(cell[,] Cell, int width, int height)
-	{
-        chunkNumber = new int[width * height];
-        worldType = new string[width * height];
-        worldHeight = new float[width * height];
+    public int width;
 
+    public int height;
+
+	public WorldData(cell[,] Cell, int widthtemp, int heighttemp)
+	{
+        chunkNumber = new int[widthtemp * heighttemp];
+        worldType = new string[widthtemp * heighttemp];
+        worldHeight = new float[widthtemp * heighttemp];
+        width = widthtemp;
+        height = heighttemp;
+        
        int counter = 0;
         for (int w = 0; w < width; w++)
         {

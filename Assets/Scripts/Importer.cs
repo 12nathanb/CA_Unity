@@ -3,7 +3,7 @@ using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
 public static class Importer {
 
-public static WorldData LoadWorld (int num)
+public static WorldData LoadWorld ()
 	{
 		string path = Application.persistentDataPath + "/Chunk.ctp";
 
