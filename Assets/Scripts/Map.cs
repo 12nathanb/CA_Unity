@@ -1,8 +1,9 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEditor;
 using System.Collections;
-
+using System.IO;
 public class Map : MonoBehaviour {
 
     public int width, height;
@@ -13,7 +14,6 @@ public class Map : MonoBehaviour {
     public cell[,] cellMap;
     public GameObject[,] cellMapObjects;
     public GameObject cellPrefab;
-    List<string> TextureNames;
 
     public Slider mainSlider;
     public Dropdown dropdown;
@@ -35,29 +35,29 @@ public class Map : MonoBehaviour {
     float spaceOfTerrain;
     public int ruleAmount;
     bool playRefine = false;
-
-    public TextAsset ruleTxt;
     public string[] textArray;
 
-    Rules[] ruleArray;
+    public Rules[] ruleArray;
     void Start()
     {
-    
-    ruleArray = new Rules[ruleAmount];
-     LoadRuleText();
-     Debug.Log(ruleArray[0].RuleName);
-     Debug.Log(ruleArray[0].Amount);
-     Debug.Log(ruleArray[0].Operator);
-     Debug.Log(ruleArray[0].Output);
+        string fileName = Application.persistentDataPath + "/Rules.txt";
+        ruleArray = new Rules[ruleAmount];
+
+        if(System.IO.File.Exists(fileName))
+        {
+            
+        }
+        else
+        {
+            FileUtil.CopyFileOrDirectory("Assets/Rules.txt", fileName);
+        }
+
+        LoadRuleText();   
     }
 
     public void generateMap()
     {
         setGridSize();
-
-        cellMap = new cell[width, height];
-
-        cellMapObjects = new GameObject[width, height];
 
         int counter = 0;
 
@@ -65,11 +65,10 @@ public class Map : MonoBehaviour {
         {
             for (int z = 0; z < height; z++)
             {
-             cellMapObjects[x, z] = (GameObject)Instantiate(cellPrefab, new Vector3(x, 0, z), Quaternion.identity);
-             cellMap[x, z] = cellMapObjects[x, z].GetComponent<cell>();
-             cellMap[x, z].createCells();
-             cellMap[x, z].setPosInArray(counter);
-             counter++;
+                cellMapObjects[x, z] = (GameObject)Instantiate(cellPrefab, new Vector3(x, 0, z), Quaternion.identity);
+                cellMap[x, z] = cellMapObjects[x, z].GetComponent<cell>();
+                cellMap[x, z].setPosInArray(counter);
+                counter++;
             }
         }
 
@@ -94,21 +93,13 @@ public class Map : MonoBehaviour {
         {
             for (int z = 0; z < height; z++)
             {
-                if (x == 0 || x == width - 1 || z == 0 || z == height - 1)
-                {
-                    cellMap[x, z].setState(cellType.water);
-                     cellMap[x, z].SelectedUpdate();                
-                }
-                else
-                {
-                    cellMap[x, z].setStateFromInt((randomSeedGenerator.Next(0, 100) < spaceOfTerrain) ? 1 : 0);
-                     cellMap[x, z].SelectedUpdate();
-                }
-
+                
+                int num = ((randomSeedGenerator.Next(0, 100) < spaceOfTerrain) ? 1 : 0);
+                 cellMap[x, z].setStateFromInt(num);       
+                
                 if (cellMap[x, z].getState() == cellType.grass)
                 {
                     cellMap[x, z].height = Random.Range(1f, 2f);
-                    cellMap[x, z].Tree = RandomBool();
                     cellMap[x, z].SelectedUpdate();
                 }
                 else
@@ -116,7 +107,7 @@ public class Map : MonoBehaviour {
                     cellMap[x, z].height = 1;
                 }
                
-
+                cellMap[x, z].SelectedUpdate();
                 
             }
         }
@@ -243,13 +234,11 @@ public class Map : MonoBehaviour {
         {
             height = 10;
             width = 10;
-            print("10x10");
         }
         else if (dropdown.value == 1)
         {
             height = 20;
             width = 20;
-            print("20x20");
         }
         else if (dropdown.value == 2)
         {
@@ -261,52 +250,46 @@ public class Map : MonoBehaviour {
         {
             height = 40;
             width = 40;
-            print("40x40");
         }
         else if (dropdown.value == 4)
         {
             height = 50;
             width = 50;
-            print("50x50");
         }
         else if (dropdown.value == 5)
         {
             height = 60;
             width = 60;
-            print("60x60");
         }
         else if (dropdown.value == 6)
         {
             height = 70;
             width = 70;
-            print("70x70");
         }
         else if (dropdown.value == 7)
         {
             height = 80;
             width = 80;
-            print("80x80");
         }
         else if (dropdown.value == 8)
         {
             height = 90;
             width = 90;
-            print("90x90");
         }
         else if (dropdown.value == 9)
         {
             height = 100;
             width = 100;
-            print("100x100");
         }
         else if (dropdown.value == 10)
         {
             int.TryParse(heightField.text.ToString(), out height);
             int.TryParse(widthField.text.ToString(), out width);
-            print("Custom");
         }
 
-       
+       cellMap = new cell[width, height];
+
+     cellMapObjects = new GameObject[width, height];
        
     }
 
@@ -392,7 +375,7 @@ public class Map : MonoBehaviour {
     public void Export()
     {
        
-                Exporter.SaveWorld(cellMap, width, height);
+        Exporter.SaveWorld(cellMap, width, height);
     
     }
 
@@ -404,7 +387,7 @@ public class Map : MonoBehaviour {
         {
            for (int z = 0; z < height; z++)
            {
-               WorldData data = Improter.LoadWorld(cellMap[x,z].getPosInArray());
+               WorldData data = Importer.LoadWorld(cellMap[x,z].getPosInArray());
                cellMap[x,z].setPosInArray(data.chunkNumber[count]);
                if(data.worldType[count] == "grass")
                {
@@ -438,7 +421,15 @@ public class Map : MonoBehaviour {
 
     public void LoadRuleText()
     {
-        string text = ruleTxt.text;
+       string text = null;
+
+        StreamReader sr = new StreamReader(Application.persistentDataPath + "/Rules.txt");
+        
+        while(!sr.EndOfStream)
+        {
+           text += sr.ReadLine();
+        }
+        
         textArray = text.Split(char.Parse(" "));
 
         int temp = 0;
@@ -476,11 +467,6 @@ public class Map : MonoBehaviour {
         }
 
         
-
-        Debug.Log(name[1].ToString());
-        Debug.Log(op[0]);
-         Debug.Log(amount[0]);
-        Debug.Log(output[1]);
 
         
     }

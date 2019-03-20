@@ -1,7 +1,7 @@
 using UnityEngine;
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
-public static class Improter {
+public static class Importer {
 
 public static WorldData LoadWorld (int num)
 	{

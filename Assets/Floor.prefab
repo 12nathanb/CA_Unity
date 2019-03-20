@@ -19,7 +19,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4248517811186864}
-  - component: {fileID: 114922411945247958}
   - component: {fileID: 33737751091288262}
   - component: {fileID: 23895570421738874}
   - component: {fileID: 114261040953741062}
@@ -100,14 +99,3 @@ MonoBehaviour:
   height: 1
   Tree: 0
   TreePrefab: {fileID: 1704566161839978, guid: 846ec148f7714e34781ab97f00f77549, type: 2}
---- !u!114 &114922411945247958
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1350569739545112}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5b4fbc6bc60c21f4a9086e7a514bed47, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 

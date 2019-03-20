@@ -17,18 +17,7 @@ public class cell : MonoBehaviour {
     public GameObject TreePrefab;
 
     GameObject treeObj;
-	// Use this for initialization
-	void Start ()
-    {
-        
-	}
 	
-    public void createCells()
-    {
-        //GameObject temp = GameObject.CreatePrimitive(PrimitiveType.Cube);
-        //cellOBJ = temp;
-        status = cellType.air;
-    }
 	// Update is called once per frame
 	public void SelectedUpdate ()
     {
