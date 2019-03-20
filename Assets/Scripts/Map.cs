@@ -6,10 +6,10 @@ using System.Collections;
 using System.IO;
 public class Map : MonoBehaviour {
 
-    public int width, height;
+    private int width, height;
 
 
-    public float fillAmount;
+    //public float fillAmount;
 
     public cell[,] cellMap;
     public GameObject[,] cellMapObjects;
@@ -21,7 +21,6 @@ public class Map : MonoBehaviour {
     public InputField heightInput;
     public InputField widthInput;
     public InputField seedInput;
-    int dropDownValue;
     public Text widthField;
     public Text heightField;
     public Text refineAmountText;
@@ -29,18 +28,19 @@ public class Map : MonoBehaviour {
 
     public Toggle useRandomSeed;
 
-    public int refineAmount;
+    private int refineAmount;
     public string seed;
     public bool randomSeed;
     float spaceOfTerrain;
     public int ruleAmount;
     bool playRefine = false;
-    public string[] textArray;
+    
 
     private bool importing = false;
     public Rules[] ruleArray;
     void Start()
     {
+        //Creates a rule txt on the users disk if there isnt one already
         string fileName = Application.persistentDataPath + "/Rules.txt";
         ruleArray = new Rules[ruleAmount];
 
@@ -80,10 +80,10 @@ public class Map : MonoBehaviour {
             }
         }
 
-    if(importing == false)
-    {
-        RandomLevelgen();
-    }
+        if(importing == false)
+        {
+            RandomLevelgen();
+        }
 
     }
 
@@ -97,8 +97,6 @@ public class Map : MonoBehaviour {
         }
 
         System.Random randomSeedGenerator = new System.Random(seed.GetHashCode());
-
-      
 
         for (int x = 0; x < width; x++)
         {
@@ -125,15 +123,15 @@ public class Map : MonoBehaviour {
 
     }
 
-    void setCellState(int width, int height, string state)
+    void setCellState(cell[,] array, int width, int height, string state)
     {
         if(state == "grass")
         {
-            cellMap[width, height].setState(cellType.grass);
+            array[width, height].setState(cellType.grass);
         }
          if(state == "water")
         {
-            cellMap[width, height].setState(cellType.water);
+            array[width, height].setState(cellType.water);
         }
     }
     void Progress()
@@ -155,8 +153,7 @@ public class Map : MonoBehaviour {
                     {
                         if (neighbours > ruleArray[r].Amount)
                         {
-                            setCellState(w,h,ruleArray[r].Output);
-                            //tempCellArray[w, h].SelectedUpdate();
+                            setCellState(tempCellArray, w,h,ruleArray[r].Output);
                         }
                     }
                     
@@ -164,8 +161,7 @@ public class Map : MonoBehaviour {
                     {
                         if (neighbours < ruleArray[r].Amount)
                         {
-                            setCellState(w,h,ruleArray[r].Output);
-                            //tempCellArray[w, h].SelectedUpdate();
+                            setCellState(tempCellArray, w,h,ruleArray[r].Output);
                         }
                     }
 
@@ -173,8 +169,7 @@ public class Map : MonoBehaviour {
                     {
                         if (neighbours == ruleArray[r].Amount)
                         {
-                            setCellState(w,h,ruleArray[r].Output);
-                           //tempCellArray[w, h].SelectedUpdate();
+                            setCellState(tempCellArray, w,h,ruleArray[r].Output);
                         }
                     }
                 }
@@ -255,7 +250,6 @@ public class Map : MonoBehaviour {
         {
             height = 30;
             width = 30;
-            print("30x30");
         }
         else if (dropdown.value == 3)
         {
@@ -315,9 +309,6 @@ public class Map : MonoBehaviour {
             playRefine = false;
 
         }
-        print(Time.time);
-        
-        print(Time.time);
     }
 
     
@@ -358,10 +349,7 @@ public class Map : MonoBehaviour {
                              sum += cellMap[neighbourX, neighbourY].height;
                              
                         }
-
-                      
                     }
-                    
                 }
                 else
                 {
@@ -377,26 +365,23 @@ public class Map : MonoBehaviour {
             cellMap[gridX, gridY].height = sum;
         }
         
-        
         return wallCount;
     }
 
     public void Export()
     {
-       
         Exporter.SaveWorld(cellMap, width, height);
-    
     }
 
     public void Import()
     {
         int count = 0;
-            WorldData data = Importer.LoadWorld();
-               Debug.Log(data.worldType[count]);
-               width = data.width;
-               height = data.height;
+        WorldData data = Importer.LoadWorld();
+        Debug.Log(data.worldType[count]);
+        width = data.width;
+        height = data.height;
 
-               importing = true;
+        importing = true;
         generateMap();
 
         for (int x = 0; x < width; x++)
@@ -404,10 +389,6 @@ public class Map : MonoBehaviour {
            for (int z = 0; z < height; z++)
            {
                 Debug.Log(data.worldType[count]);
-               
-               
-
-            // //    cellMap[x,z].setPosInArray(count);
 
                if(data.worldType[count] == "grass")
                {
@@ -445,7 +426,7 @@ public class Map : MonoBehaviour {
     public void LoadRuleText()
     {
        string text = null;
-
+        string[] textArray;
         StreamReader sr = new StreamReader(Application.persistentDataPath + "/Rules.txt");
         
         while(!sr.EndOfStream)
@@ -484,13 +465,9 @@ public class Map : MonoBehaviour {
                     output[temp] = textArray[i+1];
                 }
                 ruleArray[r] = new Rules(name[r], op[r], amount[r], output[r]);
-            }
-            
+            }    
             
         }
-
-        
-
         
     }
 
