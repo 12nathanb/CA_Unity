@@ -3,9 +3,9 @@ using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
 public static class Importer {
 
-public static WorldData LoadWorld ()
+public static WorldData LoadWorld (string name)
 	{
-		string path = Application.persistentDataPath + "/Chunk.ctp";
+		string path = Application.persistentDataPath + "/" + name + ".ctp";
 
 		if(File.Exists(path))
 		{

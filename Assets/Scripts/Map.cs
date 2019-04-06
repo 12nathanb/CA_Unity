@@ -21,12 +21,18 @@ public class Map : MonoBehaviour {
     public InputField heightInput;
     public InputField widthInput;
     public InputField seedInput;
+
+    public Text saveName;
+
+      public Text loadName;
     public Text widthField;
     public Text heightField;
     public Text refineAmountText;
     public Text seedText;
 
     public Toggle useRandomSeed;
+    public Toggle world;
+     public Toggle ca;
 
     private int refineAmount;
     public string seed;
@@ -37,13 +43,13 @@ public class Map : MonoBehaviour {
 
     float MaxHeight = 2;
 
-    public bool worldCreate = true;
+    public bool worldCreate;
     
-    public int waterCount = 0;
+    int waterCount = 0;
 
-    public int sandCount = 0;
+    int sandCount = 0;
 
-    public int grassCount = 0;
+    int grassCount = 0;
 
     private bool importing = false;
     public Rules[] ruleArray;
@@ -63,10 +69,20 @@ public class Map : MonoBehaviour {
         }
 
         LoadRuleText();   
+
+        ca.isOn = false;
+        world.isOn = true;
     }
 
     public void generateMap()
     {
+        for (int tempw = 0; tempw < width; tempw++)
+        {
+            for (int temph = 0; temph < height; temph++)
+            {
+                Destroy(cellMap[tempw, temph].gameObject); 
+            }
+        }
         if(importing == false)
         {
             setGridSize();
@@ -188,11 +204,13 @@ public class Map : MonoBehaviour {
 
 
                 }
-
-                if (waterCount >= 3 && grassCount >=3)
+                if(worldCreate == true)
                 {
-                    
-                     setCellState(tempCellArray, w, h, "sand");
+                    if (waterCount >= 3 && grassCount >=3)
+                    {
+                        
+                        setCellState(tempCellArray, w, h, "sand");
+                    }
                 }
             }
         }
@@ -218,17 +236,13 @@ public class Map : MonoBehaviour {
     {   
         if (dropdown.value != 10)
         {
-            heightInput.image.color = Color.black;
-            widthInput.image.color = Color.black;
-            heightField.gameObject.SetActive(false);
-            widthField.gameObject.SetActive(false);
+            heightInput.gameObject.SetActive(false);
+            widthInput.gameObject.SetActive(false);
         }
         else
         {
-            heightField.gameObject.SetActive(true);
-            widthField.gameObject.SetActive(true);
-            heightInput.image.color = Color.white;
-            widthInput.image.color = Color.white;
+            heightInput.gameObject.SetActive(true);
+            widthInput.gameObject.SetActive(true);
         }
 
     
@@ -240,13 +254,13 @@ public class Map : MonoBehaviour {
         if(useRandomSeed.isOn)
         {      
             randomSeed = true;
-            seedInput.image.color = Color.black;
+            seedInput.gameObject.SetActive(false);
         }
         else 
         {
             seed = seedText.text.ToString();
             randomSeed = false;
-            seedInput.image.color = Color.white;
+            seedInput.gameObject.SetActive(true);
         }
         
         spaceOfTerrain = mainSlider.value;
@@ -376,18 +390,20 @@ public class Map : MonoBehaviour {
                              sum += cellMap[neighbourX, neighbourY].height;
                              
                         }
-
-                        if(cellMap[neighbourX, neighbourY].getState() == cellType.grass)
+                        if(worldCreate == true)
                         {
-                            grassCount++;
-                        }
-                        else if(cellMap[neighbourX, neighbourY].getState() == cellType.water)
-                        {
-                            waterCount++;
-                        }
-                        else if(cellMap[neighbourX, neighbourY].getState() == cellType.sand)
-                        {
-                            sandCount++;
+                            if(cellMap[neighbourX, neighbourY].getState() == cellType.grass)
+                            {
+                                grassCount++;
+                            }
+                            else if(cellMap[neighbourX, neighbourY].getState() == cellType.water)
+                            {
+                                waterCount++;
+                            }
+                            else if(cellMap[neighbourX, neighbourY].getState() == cellType.sand)
+                            {
+                                sandCount++;
+                            }
                         }
                     }
                 }
@@ -421,16 +437,19 @@ public class Map : MonoBehaviour {
         
     }
 
-
+    void setCAorWorld(bool set)
+    {
+        worldCreate = set;
+    }
     public void Export()
     {
-        Exporter.SaveWorld(cellMap, width, height);
+        Exporter.SaveWorld(cellMap, width, height, saveName.text.ToString());
     }
 
     public void Import()
     {
         int count = 0;
-        WorldData data = Importer.LoadWorld();
+        WorldData data = Importer.LoadWorld(loadName.text.ToString());
         Debug.Log(data.worldType[count]);
         width = data.width;
         height = data.height;
