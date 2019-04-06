@@ -16,32 +16,55 @@ public class cell : MonoBehaviour {
     public bool Tree = false;
     public GameObject TreePrefab;
 
+    public Material lightGreen;
+
+    public Material darkGreen;
+
+    public Material water;
+
+    public Material sand;
     GameObject treeObj;
 	
 	// Update is called once per frame
 	public void SelectedUpdate ()
     {
-
-    if (status == cellType.air)
+        if(height < 1)
+        {
+            height = 1;
+        }
+       if (status == cellType.air)
        {
             this.gameObject.GetComponent<MeshRenderer>().material.color = Color.white;
        }
        else if (status == cellType.grass)
        {
+           if(height <= 1.5)
+           {
+               this.gameObject.GetComponent<MeshRenderer>().material = lightGreen;
+           }
+           else if(height >= 1.5)
+           {
+               this.gameObject.GetComponent<MeshRenderer>().material = darkGreen;
+           }
+           else
+           {
+                this.gameObject.GetComponent<MeshRenderer>().material = lightGreen;
+           }
              this.gameObject.transform.localScale = new Vector3(1, height, 1 );
-           this.gameObject.GetComponent<MeshRenderer>().material.color = Color.green;
+           
 
            
        }
        else if (status == cellType.water)
        {
            this.gameObject.transform.localScale = new Vector3(1, 1, 1 );
-           this.gameObject.GetComponent<MeshRenderer>().material.color = Color.blue;
+           this.gameObject.GetComponent<MeshRenderer>().material = water;
 
        }
        else if (status == cellType.sand)
        {
-           this.gameObject.GetComponent<MeshRenderer>().material.color = Color.yellow;
+           this.gameObject.transform.localScale = new Vector3(1, 1, 1 );
+           this.gameObject.GetComponent<MeshRenderer>().material = sand;
        }
 
     //    if(Tree == true && status == cellType.grass)

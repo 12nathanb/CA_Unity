@@ -3362,6 +3362,10 @@ MonoBehaviour:
   seed: 
   randomSeed: 0
   ruleAmount: 2
+  worldCreate: 1
+  waterCount: 0
+  sandCount: 0
+  grassCount: 0
 --- !u!1 &1836470485
 GameObject:
   m_ObjectHideFlags: 0

@@ -57,7 +57,7 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RenderingLayerMask: 4294967295
   m_Materials:
-  - {fileID: 0}
+  - {fileID: 2100000, guid: 9494f59cc307037449d165256fb54ee2, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -99,3 +99,7 @@ MonoBehaviour:
   height: 1
   Tree: 0
   TreePrefab: {fileID: 1704566161839978, guid: 846ec148f7714e34781ab97f00f77549, type: 2}
+  lightGreen: {fileID: 2100000, guid: a035579f533abc0418eb84ab95cf703e, type: 2}
+  darkGreen: {fileID: 2100000, guid: a6ec133e17fb82641af88054649f4afd, type: 2}
+  water: {fileID: 2100000, guid: ebac31608ddf9dd4e81a2257d5c3958e, type: 2}
+  sand: {fileID: 2100000, guid: 03ac68c102ed59d47af59ab734abcd46, type: 2}

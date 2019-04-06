@@ -34,7 +34,16 @@ public class Map : MonoBehaviour {
     float spaceOfTerrain;
     public int ruleAmount;
     bool playRefine = false;
+
+    float MaxHeight = 2;
+
+    public bool worldCreate = true;
     
+    public int waterCount = 0;
+
+    public int sandCount = 0;
+
+    public int grassCount = 0;
 
     private bool importing = false;
     public Rules[] ruleArray;
@@ -108,7 +117,7 @@ public class Map : MonoBehaviour {
                 
                 if (cellMap[x, z].getState() == cellType.grass)
                 {
-                    cellMap[x, z].height = Random.Range(1f, 2f);
+                    cellMap[x, z].height = Random.Range(1f, MaxHeight);
                     cellMap[x, z].SelectedUpdate();
                 }
                 else
@@ -132,6 +141,10 @@ public class Map : MonoBehaviour {
          if(state == "water")
         {
             array[width, height].setState(cellType.water);
+        }
+        if(state == "sand")
+        {
+            array[width, height].setState(cellType.sand);
         }
     }
     void Progress()
@@ -172,6 +185,14 @@ public class Map : MonoBehaviour {
                             setCellState(tempCellArray, w,h,ruleArray[r].Output);
                         }
                     }
+
+
+                }
+
+                if (waterCount >= 3 && grassCount >=3)
+                {
+                    
+                     setCellState(tempCellArray, w, h, "sand");
                 }
             }
         }
@@ -332,6 +353,12 @@ public class Map : MonoBehaviour {
         int wallCount = 0;
         float sum = 0;
         int count = 0;
+         waterCount = 0;
+
+         sandCount = 0;
+
+         grassCount = 0;
+
         //check 8 tiles surrounding current one, however this could be changed depending on desired effect
         for (int neighbourX = gridX - 1; neighbourX <= gridX + 1; neighbourX++)
         { //horiz
@@ -349,6 +376,19 @@ public class Map : MonoBehaviour {
                              sum += cellMap[neighbourX, neighbourY].height;
                              
                         }
+
+                        if(cellMap[neighbourX, neighbourY].getState() == cellType.grass)
+                        {
+                            grassCount++;
+                        }
+                        else if(cellMap[neighbourX, neighbourY].getState() == cellType.water)
+                        {
+                            waterCount++;
+                        }
+                        else if(cellMap[neighbourX, neighbourY].getState() == cellType.sand)
+                        {
+                            sandCount++;
+                        }
                     }
                 }
                 else
@@ -362,11 +402,25 @@ public class Map : MonoBehaviour {
         if(cellMap[gridX, gridY].getStateInt() == 1)
         {
             sum = sum / count;
+
+            if(sum < 1)
+            {
+                sum = 1;
+            }
             cellMap[gridX, gridY].height = sum;
         }
         
-        return wallCount;
+        if(worldCreate == true)
+        {
+            return wallCount;
+        }
+        else
+        {
+            return count;
+        }
+        
     }
+
 
     public void Export()
     {
@@ -397,6 +451,10 @@ public class Map : MonoBehaviour {
                else if(data.worldType[count] == "water")
                {
                    cellMap[x,z].setState(cellType.water);
+               }
+               else if(data.worldType[count] == "sand")
+               {
+                   cellMap[x,z].setState(cellType.sand);
                }
                   cellMap[x,z].setWorldHeight(data.worldHeight[count]);
                 cellMap[x,z].SelectedUpdate();
