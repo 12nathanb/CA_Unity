@@ -22,6 +22,7 @@ public class Map : MonoBehaviour {
     public InputField widthInput;
     public InputField seedInput;
 
+    public Text ruleAmountText;
     public Text saveName;
 
       public Text loadName;
@@ -32,7 +33,7 @@ public class Map : MonoBehaviour {
 
     public Toggle useRandomSeed;
     public Toggle world;
-     public Toggle ca;
+    public RectTransform worldText;
 
     private int refineAmount;
     public string seed;
@@ -58,31 +59,32 @@ public class Map : MonoBehaviour {
         //Creates a rule txt on the users disk if there isnt one already
         string fileName = Application.persistentDataPath + "/Rules.txt";
         ruleArray = new Rules[ruleAmount];
-
+        string ruleLocation =  Application.streamingAssetsPath + "/Rules.txt";
+        Debug.Log(Application.streamingAssetsPath + "/Rules.txt");
         if(System.IO.File.Exists(fileName))
         {
-            
+            Debug.Log("Does Exist");
         }
         else
         {
-            FileUtil.CopyFileOrDirectory("Assets/Rules.txt", fileName);
+            System.IO.File.Copy(ruleLocation, fileName, true);
+         
         }
 
         LoadRuleText();   
 
-        ca.isOn = false;
         world.isOn = true;
     }
 
     public void generateMap()
     {
-        for (int tempw = 0; tempw < width; tempw++)
-        {
-            for (int temph = 0; temph < height; temph++)
-            {
-                Destroy(cellMap[tempw, temph].gameObject); 
-            }
-        }
+        // for (int tempw = 0; tempw < cellMap.GetLength(0); tempw++)
+        // {
+        //     for (int temph = 0; temph < cellMap.GetLength(1); temph++)
+        //     {
+        //         Destroy(cellMap[tempw, temph].gameObject); 
+        //     }
+        // }
         if(importing == false)
         {
             setGridSize();
@@ -165,6 +167,15 @@ public class Map : MonoBehaviour {
     }
     void Progress()
     {
+        if(world.isOn == true)
+        {
+            worldCreate = true;
+        }
+        else
+        {
+            worldCreate = false;
+        }
+
         cell[,] tempCellArray;
         tempCellArray = cellMap;
 
@@ -248,9 +259,17 @@ public class Map : MonoBehaviour {
     
 
         int.TryParse(refineAmountText.text.ToString(), out refineAmount);
-
+        int.TryParse(ruleAmountText.text.ToString(), out ruleAmount);
         randomSeed = true;
 
+        if(world.isOn == true)
+        {
+            worldText.GetComponent<Text>().text = "World generation";
+        }
+        else
+        {
+            worldText.GetComponent<Text>().text = "Cellular Automata";
+        }
         if(useRandomSeed.isOn)
         {      
             randomSeed = true;
@@ -422,7 +441,7 @@ public class Map : MonoBehaviour {
             if(sum < 1)
             {
                 sum = 1;
-            }
+            } 
             cellMap[gridX, gridY].height = sum;
         }
         
@@ -450,6 +469,7 @@ public class Map : MonoBehaviour {
     {
         int count = 0;
         WorldData data = Importer.LoadWorld(loadName.text.ToString());
+        Debug.Log(loadName.text.ToString());
         Debug.Log(data.worldType[count]);
         width = data.width;
         height = data.height;

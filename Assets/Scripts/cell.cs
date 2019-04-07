@@ -57,7 +57,7 @@ public class cell : MonoBehaviour {
        }
        else if (status == cellType.water)
        {
-           this.gameObject.transform.localScale = new Vector3(1, 1, 1 );
+           this.gameObject.transform.localScale = new Vector3(1, 0.8f, 1 );
            this.gameObject.GetComponent<MeshRenderer>().material = water;
 
        }
