@@ -56,7 +56,17 @@ public class Map : MonoBehaviour {
     public Rules[] ruleArray;
     void Start()
     {
+        ruleAmountText.text = "2";
         //Creates a rule txt on the users disk if there isnt one already
+        
+        CheckRuleFile();
+        LoadRuleText();   
+
+        world.isOn = true;
+    }
+
+    void CheckRuleFile()
+    {
         string fileName = Application.persistentDataPath + "/Rules.txt";
         ruleArray = new Rules[ruleAmount];
         string ruleLocation =  Application.streamingAssetsPath + "/Rules.txt";
@@ -70,21 +80,15 @@ public class Map : MonoBehaviour {
             System.IO.File.Copy(ruleLocation, fileName, true);
          
         }
+    }
 
-        LoadRuleText();   
-
-        world.isOn = true;
+    public void ResetRuleFile()
+    {
+        CheckRuleFile();
     }
 
     public void generateMap()
     {
-        // for (int tempw = 0; tempw < cellMap.GetLength(0); tempw++)
-        // {
-        //     for (int temph = 0; temph < cellMap.GetLength(1); temph++)
-        //     {
-        //         Destroy(cellMap[tempw, temph].gameObject); 
-        //     }
-        // }
         if(importing == false)
         {
             setGridSize();
@@ -164,6 +168,10 @@ public class Map : MonoBehaviour {
         {
             array[width, height].setState(cellType.sand);
         }
+        if(state == "dark water")
+        {
+            array[width, height].setState(cellType.darkWater);
+        }
     }
     void Progress()
     {
@@ -221,6 +229,11 @@ public class Map : MonoBehaviour {
                     {
                         
                         setCellState(tempCellArray, w, h, "sand");
+                    }
+
+                    if (waterCount >= 8)
+                    {
+                        setCellState(tempCellArray, w, h, "dark water");
                     }
                 }
             }
@@ -402,6 +415,8 @@ public class Map : MonoBehaviour {
                     if (neighbourX != gridX || neighbourY != gridY)
                     { //don't consider tile we're looking at
                         wallCount += cellMap[neighbourX, neighbourY].getStateInt();
+                    
+                
 
                         if(cellMap[neighbourX, neighbourY].getState() == type)
                         {
@@ -409,6 +424,7 @@ public class Map : MonoBehaviour {
                              sum += cellMap[neighbourX, neighbourY].height;
                              
                         }
+
                         if(worldCreate == true)
                         {
                             if(cellMap[neighbourX, neighbourY].getState() == cellType.grass)
@@ -416,6 +432,10 @@ public class Map : MonoBehaviour {
                                 grassCount++;
                             }
                             else if(cellMap[neighbourX, neighbourY].getState() == cellType.water)
+                            {
+                                waterCount++;
+                            }
+                            else if(cellMap[neighbourX, neighbourY].getState() == cellType.darkWater)
                             {
                                 waterCount++;
                             }
@@ -442,7 +462,12 @@ public class Map : MonoBehaviour {
             {
                 sum = 1;
             } 
-            cellMap[gridX, gridY].height = sum;
+
+            if(sum != 0)
+            {
+                 cellMap[gridX, gridY].height = sum;
+            }
+           
         }
         
         if(worldCreate == true)

@@ -102,4 +102,5 @@ MonoBehaviour:
   lightGreen: {fileID: 2100000, guid: a035579f533abc0418eb84ab95cf703e, type: 2}
   darkGreen: {fileID: 2100000, guid: a6ec133e17fb82641af88054649f4afd, type: 2}
   water: {fileID: 2100000, guid: ebac31608ddf9dd4e81a2257d5c3958e, type: 2}
+  darkWater: {fileID: 2100000, guid: 6ba0f16a61430f84c961142cf0880ea1, type: 2}
   sand: {fileID: 2100000, guid: 03ac68c102ed59d47af59ab734abcd46, type: 2}

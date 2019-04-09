@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum cellType {air, grass, water, sand};
+public enum cellType {air, grass, water, sand, darkWater};
 
 public class cell : MonoBehaviour {
 
@@ -21,17 +21,19 @@ public class cell : MonoBehaviour {
     public Material darkGreen;
 
     public Material water;
-
+    public Material darkWater;
     public Material sand;
     GameObject treeObj;
 	
 	// Update is called once per frame
 	public void SelectedUpdate ()
     {
-        if(height < 1)
+
+        if(height < 1 || System.Single.IsNaN(height))
         {
             height = 1;
         }
+
        if (status == cellType.air)
        {
             this.gameObject.GetComponent<MeshRenderer>().material.color = Color.white;
@@ -48,7 +50,7 @@ public class cell : MonoBehaviour {
            }
            else
            {
-                this.gameObject.GetComponent<MeshRenderer>().material = lightGreen;
+               // this.gameObject.GetComponent<MeshRenderer>().material = lightGreen;
            }
              this.gameObject.transform.localScale = new Vector3(1, height, 1 );
            
@@ -59,6 +61,13 @@ public class cell : MonoBehaviour {
        {
            this.gameObject.transform.localScale = new Vector3(1, 0.8f, 1 );
            this.gameObject.GetComponent<MeshRenderer>().material = water;
+
+       }
+
+       else if (status == cellType.darkWater)
+       {
+           this.gameObject.transform.localScale = new Vector3(1, 0.8f, 1 );
+           this.gameObject.GetComponent<MeshRenderer>().material = darkWater;
 
        }
        else if (status == cellType.sand)
@@ -92,7 +101,7 @@ public class cell : MonoBehaviour {
 
     public int getStateInt()
     {
-        if (status == cellType.grass)
+        if (status == cellType.grass || status == cellType.sand)
         {
             return 0;
         }
@@ -108,7 +117,7 @@ public class cell : MonoBehaviour {
        
         if (type == 0)
         {
-            setState(cellType.grass);
+            setState(cellType.sand);
         }
         else if (type == 1)
         {
