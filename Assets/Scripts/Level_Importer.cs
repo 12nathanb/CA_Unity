@@ -70,6 +70,10 @@ public class Level_Importer : MonoBehaviour {
                {
                    cellMap[x,z].setState(cellType.water);
                }
+               else if(data.worldType[count] == "darkWater")
+               {
+                   cellMap[x,z].setState(cellType.darkWater);
+               }
                else if(data.worldType[count] == "sand")
                {
                    cellMap[x,z].setState(cellType.sand);

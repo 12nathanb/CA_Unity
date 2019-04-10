@@ -6,71 +6,64 @@ using System.Collections;
 using System.IO;
 public class Map : MonoBehaviour {
 
+
+    //---Private Variables---
     private int width, height;
+    private int refineAmount;
+    private bool deleted = true;
+    private int waterCount = 0;
 
+    private int sandCount = 0;
 
-    //public float fillAmount;
+    private int grassCount = 0;
+    private bool importing = false;
 
+    //---public Variables---
     public cell[,] cellMap;
     public GameObject[,] cellMapObjects;
     public GameObject cellPrefab;
-
     public Slider mainSlider;
     public Dropdown dropdown;
-
+    public Dropdown startingBlock;
     public InputField heightInput;
     public InputField widthInput;
     public InputField seedInput;
-
     public Text ruleAmountText;
     public Text saveName;
-
-      public Text loadName;
+    public Text loadName;
     public Text widthField;
     public Text heightField;
     public Text refineAmountText;
     public Text seedText;
-
     public Toggle useRandomSeed;
     public Toggle world;
+    public Toggle beaches;
     public RectTransform worldText;
-
-    private int refineAmount;
     public string seed;
     public bool randomSeed;
     float spaceOfTerrain;
     public int ruleAmount;
     bool playRefine = false;
-
     float MaxHeight = 2;
-
     public bool worldCreate;
-    
-    int waterCount = 0;
-
-    int sandCount = 0;
-
-    int grassCount = 0;
-
-    private bool importing = false;
     public Rules[] ruleArray;
+
+
     void Start()
-    {
-        ruleAmountText.text = "2";
-        //Creates a rule txt on the users disk if there isnt one already
-        
+    {     
         CheckRuleFile();
         LoadRuleText();   
-
         world.isOn = true;
     }
 
+    //This function checks to make sure the program has a rule file loaded 
     void CheckRuleFile()
     {
         string fileName = Application.persistentDataPath + "/Rules.txt";
         ruleArray = new Rules[ruleAmount];
         string ruleLocation =  Application.streamingAssetsPath + "/Rules.txt";
         Debug.Log(Application.streamingAssetsPath + "/Rules.txt");
+
         if(System.IO.File.Exists(fileName))
         {
             Debug.Log("Does Exist");
@@ -82,44 +75,43 @@ public class Map : MonoBehaviour {
         }
     }
 
-    public void ResetRuleFile()
-    {
-        CheckRuleFile();
-    }
-
+    //This function is incharge of generating the map
     public void generateMap()
     {
-        if(importing == false)
+        if(deleted== true)
         {
-            setGridSize();
-        }
-        
-        cellMap = new cell[width, height];
+            deleted = false;
 
-        cellMapObjects = new GameObject[width, height];
-
-        int counter = 0;
-
-        for (int x = 0; x < width; x++)
-        {
-            for (int z = 0; z < height; z++)
+            if(importing == false)
             {
-                cellMapObjects[x, z] = (GameObject)Instantiate(cellPrefab, new Vector3(x, 0, z), Quaternion.identity);
-                cellMap[x, z] = cellMapObjects[x, z].GetComponent<cell>();
-                cellMap[x, z].setPosInArray(counter);
-                counter++;
+                setGridSize();
+            }
+            
+            cellMap = new cell[width, height];
+
+            cellMapObjects = new GameObject[width, height];
+
+            int counter = 0;
+
+            for (int x = 0; x < width; x++)
+            {
+                for (int z = 0; z < height; z++)
+                {
+                    cellMapObjects[x, z] = (GameObject)Instantiate(cellPrefab, new Vector3(x, 0, z), Quaternion.identity);
+                    cellMap[x, z] = cellMapObjects[x, z].GetComponent<cell>();
+                    cellMap[x, z].setPosInArray(counter);
+                    counter++;
+                }
+            }
+
+            if(importing == false)
+            {
+                RandomLevelgen();
             }
         }
-
-        if(importing == false)
-        {
-            RandomLevelgen();
-        }
-
     }
 
-    
-
+    //this function is in charge of creating the inital random map
     void RandomLevelgen()
     {
         if (randomSeed == true)
@@ -135,9 +127,26 @@ public class Map : MonoBehaviour {
             {
                 
                 int num = ((randomSeedGenerator.Next(0, 100) < spaceOfTerrain) ? 1 : 0);
-                 cellMap[x, z].setStateFromInt(num);       
+
+                if(num == 0)
+                {
+                    if(startingBlock.value == 0)
+                    {
+                        cellMap[x, z].setState(cellType.grass);
+                    }
+                    else if(startingBlock.value == 1)
+                    {
+                        cellMap[x, z].setState(cellType.sand);
+                    }
+                }
+                else
+                {
+                    cellMap[x, z].setState(cellType.water);
+                }
                 
-                if (cellMap[x, z].getState() == cellType.grass)
+                       
+                
+                if (cellMap[x, z].getState() == cellType.grass || cellMap[x, z].getState() == cellType.sand)
                 {
                     cellMap[x, z].height = Random.Range(1f, MaxHeight);
                     cellMap[x, z].SelectedUpdate();
@@ -154,6 +163,7 @@ public class Map : MonoBehaviour {
 
     }
 
+    //This function is used to set the cells state by passing data through
     void setCellState(cell[,] array, int width, int height, string state)
     {
         if(state == "grass")
@@ -173,6 +183,8 @@ public class Map : MonoBehaviour {
             array[width, height].setState(cellType.darkWater);
         }
     }
+
+    //This function itterates the CA through its stages
     void Progress()
     {
         if(world.isOn == true)
@@ -223,14 +235,18 @@ public class Map : MonoBehaviour {
 
 
                 }
+
                 if(worldCreate == true)
                 {
-                    if (waterCount >= 3 && grassCount >=3)
+                    if(beaches.isOn)
                     {
-                        
-                        setCellState(tempCellArray, w, h, "sand");
-                    }
+                        if (waterCount >= 3 && grassCount >=3)
+                        {
+                            setCellState(tempCellArray, w, h, "sand");
+                        }
 
+                    }
+                    
                     if (waterCount >= 8)
                     {
                         setCellState(tempCellArray, w, h, "dark water");
@@ -241,8 +257,8 @@ public class Map : MonoBehaviour {
 
         UpdateCellMap(tempCellArray);
     }
-    // Update is called once per frame
-
+    
+    //This updates the maps cell states everytime it itterates
     void UpdateCellMap(cell[,] temp)
     {
         cellMap = temp;
@@ -256,6 +272,7 @@ public class Map : MonoBehaviour {
 
         }
     }
+
     void Update()
     {   
         if (dropdown.value != 10)
@@ -481,10 +498,6 @@ public class Map : MonoBehaviour {
         
     }
 
-    void setCAorWorld(bool set)
-    {
-        worldCreate = set;
-    }
     public void Export()
     {
         Exporter.SaveWorld(cellMap, width, height, saveName.text.ToString());
@@ -516,6 +529,10 @@ public class Map : MonoBehaviour {
                {
                    cellMap[x,z].setState(cellType.water);
                }
+               else if(data.worldType[count] == "darkWater")
+               {
+                   cellMap[x,z].setState(cellType.darkWater);
+               }
                else if(data.worldType[count] == "sand")
                {
                    cellMap[x,z].setState(cellType.sand);
@@ -531,17 +548,23 @@ public class Map : MonoBehaviour {
         importing = false;
         
     }
-  
-    bool RandomBool()
+
+
+    public void DeleteMap()
     {
-        if (Random.value > 0.5)
+        if(deleted == false)
         {
-            return true;
+            for (int tempw = 0; tempw < cellMap.GetLength(0); tempw++)
+            {
+                for (int temph = 0; temph < cellMap.GetLength(1); temph++)
+                {
+                    Destroy(cellMap[tempw, temph].gameObject); 
+                }
+            }
+
+            deleted = true;
         }
-        else
-        {
-            return false;
-        }
+
         
     }
 

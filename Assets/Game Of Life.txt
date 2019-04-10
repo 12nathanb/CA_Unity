@@ -1,4 +1,0 @@
-    Rule 0 
-    operator =  
-    amount 3 
-    output grass

@@ -9,73 +9,45 @@ Prefab:
     m_Modifications: []
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 0}
-  m_RootGameObject: {fileID: 1704566161839978}
+  m_RootGameObject: {fileID: 1520305534136616}
   m_IsPrefabAsset: 1
---- !u!1 &1520935834967066
+--- !u!1 &1520305534136616
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 4662393015412904}
-  - component: {fileID: 33713959263847176}
-  - component: {fileID: 23709490399689176}
+  - component: {fileID: 4847431625759128}
+  - component: {fileID: 33586985920138330}
+  - component: {fileID: 23426015898270926}
+  - component: {fileID: 114312952394379548}
   m_Layer: 0
-  m_Name: Default
+  m_Name: Map Generator
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!1 &1704566161839978
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 4650236347890306}
-  m_Layer: 0
-  m_Name: Tree
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &4650236347890306
+--- !u!4 &4847431625759128
 Transform:
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1704566161839978}
-  m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.5820434, y: -2.5500276, z: 7.071983}
-  m_LocalScale: {x: 0.05, y: 0.05, z: 0.05}
-  m_Children:
-  - {fileID: 4662393015412904}
+  m_GameObject: {fileID: 1520305534136616}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!4 &4662393015412904
-Transform:
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1520935834967066}
-  m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 4650236347890306}
-  m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!23 &23709490399689176
+--- !u!23 &23426015898270926
 MeshRenderer:
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1520935834967066}
+  m_GameObject: {fileID: 1520305534136616}
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
@@ -85,8 +57,7 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RenderingLayerMask: 4294967295
   m_Materials:
-  - {fileID: 2100000, guid: 27274f671a1a0714ab97ec83c64d743a, type: 3}
-  - {fileID: 2100002, guid: 27274f671a1a0714ab97ec83c64d743a, type: 3}
+  - {fileID: 0}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -106,10 +77,43 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
---- !u!33 &33713959263847176
+--- !u!33 &33586985920138330
 MeshFilter:
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1520935834967066}
-  m_Mesh: {fileID: 4300000, guid: 27274f671a1a0714ab97ec83c64d743a, type: 3}
+  m_GameObject: {fileID: 1520305534136616}
+  m_Mesh: {fileID: 0}
+--- !u!114 &114312952394379548
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1520305534136616}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 905c42cf988d4af45b8714900d816a03, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  cellPrefab: {fileID: 1350569739545112, guid: e6f5915be59539f4186bbdd3b5c81f05, type: 2}
+  mainSlider: {fileID: 0}
+  dropdown: {fileID: 0}
+  startingBlock: {fileID: 0}
+  heightInput: {fileID: 0}
+  widthInput: {fileID: 0}
+  seedInput: {fileID: 0}
+  ruleAmountText: {fileID: 0}
+  saveName: {fileID: 0}
+  loadName: {fileID: 0}
+  widthField: {fileID: 0}
+  heightField: {fileID: 0}
+  refineAmountText: {fileID: 0}
+  seedText: {fileID: 0}
+  useRandomSeed: {fileID: 0}
+  world: {fileID: 0}
+  beaches: {fileID: 0}
+  worldText: {fileID: 0}
+  seed: 
+  randomSeed: 0
+  ruleAmount: 2
+  worldCreate: 0

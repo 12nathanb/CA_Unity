@@ -6,24 +6,16 @@ public enum cellType {air, grass, water, sand, darkWater};
 
 public class cell : MonoBehaviour {
 
+    private int posIntArray;
+    private Vector3 Position;
+
     public cellType status;
-
-    int posIntArray;
-    Vector3 Position;
-    GameObject cellOBJ;
     public float height = 1;
-
-    public bool Tree = false;
-    public GameObject TreePrefab;
-
     public Material lightGreen;
-
     public Material darkGreen;
-
     public Material water;
     public Material darkWater;
     public Material sand;
-    GameObject treeObj;
 	
 	// Update is called once per frame
 	public void SelectedUpdate ()
@@ -53,7 +45,7 @@ public class cell : MonoBehaviour {
                // this.gameObject.GetComponent<MeshRenderer>().material = lightGreen;
            }
              this.gameObject.transform.localScale = new Vector3(1, height, 1 );
-           
+          
 
            
        }
@@ -74,19 +66,7 @@ public class cell : MonoBehaviour {
        {
            this.gameObject.transform.localScale = new Vector3(1, 1, 1 );
            this.gameObject.GetComponent<MeshRenderer>().material = sand;
-       }
-
-    //    if(Tree == true && status == cellType.grass)
-    //        {
-    //            treeObj = Instantiate(TreePrefab, new Vector3(this.transform.position.x, height, this.transform.position.z), Quaternion.identity);
-    //        }
-    //        else if (Tree == true && status != cellType.grass)
-    //        {
-    //            Destroy(treeObj);
-    //        }
-
-
-     
+       } 
     }
 
     public void setState(cellType state)
@@ -117,15 +97,11 @@ public class cell : MonoBehaviour {
        
         if (type == 0)
         {
-            setState(cellType.sand);
+            setState(cellType.grass);
         }
         else if (type == 1)
         {
             setState(cellType.water);
-        }
-        else if (type == 2)
-        {
-            setState(cellType.sand);
         }
         else
         {
